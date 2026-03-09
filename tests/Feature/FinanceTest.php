@@ -26,6 +26,7 @@ class FinanceTest extends TestCase
         $response = $this->actingAs($user)->post(route('quotes.store'), [
             'client_id' => $client->id,
             'case_file_id' => $caseFile->id,
+            'title' => 'Retainer Quote',
             'issued_at' => now()->toDateString(),
             'valid_until' => now()->addDays(14)->toDateString(),
             'tax' => 10,
@@ -68,6 +69,7 @@ class FinanceTest extends TestCase
         $response = $this->actingAs($user)->post(route('invoices.store'), [
             'client_id' => $client->id,
             'case_file_id' => $caseFile->id,
+            'title' => 'Filing Fee Invoice',
             'issued_at' => now()->toDateString(),
             'due_date' => now()->addDays(7)->toDateString(),
             'tax' => 10,
@@ -139,13 +141,16 @@ class FinanceTest extends TestCase
 
     private function createUserWithPermissions(array $permissionSlugs): User
     {
-        $role = Role::factory()->create(['slug' => 'finance-role']);
+        $role = Role::query()->firstOrCreate(
+            ['slug' => 'finance-role'],
+            ['name' => 'Finance Role']
+        );
 
         foreach ($permissionSlugs as $slug) {
-            $permission = Permission::factory()->create([
-                'slug' => $slug,
-                'name' => ucfirst(str_replace('.', ' ', $slug)),
-            ]);
+            $permission = Permission::query()->firstOrCreate(
+                ['slug' => $slug],
+                ['name' => ucfirst(str_replace('.', ' ', $slug))]
+            );
             $role->permissions()->syncWithoutDetaching([$permission->id]);
         }
 
