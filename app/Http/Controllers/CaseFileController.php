@@ -18,10 +18,27 @@ class CaseFileController extends Controller
     {
         Gate::authorize('permission', 'cases.view');
 
+        $search = request('search');
+
         $caseFiles = CaseFile::query()
             ->with(['client', 'leadLawyer'])
+            ->when($search, function ($query, string $search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('suit_number', 'like', "%{$search}%")
+                        ->orWhere('court', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%")
+                        ->orWhereHas('client', function ($query) use ($search): void {
+                            $query->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('leadLawyer', function ($query) use ($search): void {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->orderByDesc('filing_date')
             ->paginate(15)
+            ->withQueryString()
             ->through(function (CaseFile $caseFile): array {
                 return [
                     'id' => $caseFile->id,
@@ -36,6 +53,9 @@ class CaseFileController extends Controller
 
         return Inertia::render('cases/index', [
             'caseFiles' => $caseFiles,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 
@@ -66,6 +86,38 @@ class CaseFileController extends Controller
             'caseFile' => $case->load(['client', 'leadLawyer']),
             'clients' => Client::query()->orderBy('name')->get(['id', 'name']),
             'lawyers' => User::query()->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
+    public function show(CaseFile $case): Response
+    {
+        Gate::authorize('permission', 'cases.view');
+
+        $case->load(['client', 'leadLawyer', 'assignments.user', 'documentLinks.document']);
+
+        return Inertia::render('cases/show', [
+            'caseFile' => [
+                'id' => $case->id,
+                'title' => $case->title,
+                'suit_number' => $case->suit_number,
+                'court' => $case->court,
+                'filing_date' => $case->filing_date?->toDateString(),
+                'opposing_party' => $case->opposing_party,
+                'opposing_counsel' => $case->opposing_counsel,
+                'status' => $case->status,
+                'summary' => $case->summary,
+                'client' => $case->client?->name,
+                'lead_lawyer' => $case->leadLawyer?->name,
+                'assignees' => $case->assignments->map(fn ($assignment): array => [
+                    'id' => $assignment->user_id,
+                    'name' => $assignment->user?->name,
+                    'role' => $assignment->role,
+                ]),
+                'documents' => $case->documentLinks->map(fn ($link): array => [
+                    'id' => $link->document?->id,
+                    'title' => $link->document?->title,
+                ])->filter(),
+            ],
         ]);
     }
 

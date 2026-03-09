@@ -17,6 +17,15 @@ class PermissionSeeder extends Seeder
             'cases' => 'Cases',
             'staff' => 'Staff',
             'documents' => 'Documents',
+            'cause-list' => 'Cause List',
+            'reports' => 'Reports',
+            'quotes' => 'Quotes',
+            'invoices' => 'Invoices',
+            'payments' => 'Payments',
+            'messages' => 'Messages',
+            'notification-letters' => 'Notification Letters',
+            'activity-logs' => 'Activity Logs',
+            'roles' => 'Roles',
         ];
 
         $actions = [
@@ -24,6 +33,7 @@ class PermissionSeeder extends Seeder
             'create' => 'Create',
             'edit' => 'Edit',
             'delete' => 'Delete',
+            'review' => 'Review',
         ];
 
         foreach ($modules as $moduleSlug => $moduleName) {

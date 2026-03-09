@@ -86,6 +86,9 @@ export default function StaffCreate({ roles }: { roles: Role[] }) {
                                     ))}
                                 </div>
                                 <InputError message={errors.roles} />
+                                <p className="text-xs text-slate-500">
+                                    Manage role permissions under Roles &amp; Permissions.
+                                </p>
                             </div>
 
                             <div className="grid gap-2 md:grid-cols-2">

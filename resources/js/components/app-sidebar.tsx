@@ -1,5 +1,20 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Briefcase, FileText, FolderGit2, LayoutGrid, Users } from 'lucide-react';
+import {
+    BookOpen,
+    Briefcase,
+    CalendarDays,
+    FileText,
+    FolderGit2,
+    LayoutGrid,
+    FileBarChart2,
+    CreditCard,
+    FileSignature,
+    ShieldCheck,
+    MessageSquare,
+    KeyRound,
+    Receipt,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -15,9 +30,18 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
+import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
+import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
+import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
+import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
+import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import StaffController from '@/actions/App/Http/Controllers/StaffController';
+import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -37,19 +61,64 @@ const mainNavItems: NavItem[] = [
         icon: Briefcase,
     },
     {
+        title: 'Cause List',
+        href: CauseListController.index(),
+        icon: CalendarDays,
+    },
+    {
+        title: 'Reports',
+        href: ReportController.index(),
+        icon: FileBarChart2,
+    },
+    {
+        title: 'Quotes',
+        href: QuoteController.index(),
+        icon: FileSignature,
+    },
+    {
+        title: 'Invoices',
+        href: InvoiceController.index(),
+        icon: Receipt,
+    },
+    {
+        title: 'Payments',
+        href: PaymentController.index(),
+        icon: CreditCard,
+    },
+    {
+        title: 'Messages',
+        href: ConversationController.index(),
+        icon: MessageSquare,
+    },
+    {
+        title: 'Notification Letters',
+        href: NotificationLetterController.index(),
+        icon: FileSignature,
+    },
+    {
         title: 'Staff',
         href: StaffController.index(),
         icon: Users,
+    },
+    {
+        title: 'Roles & Permissions',
+        href: RoleController.index(),
+        icon: KeyRound,
     },
     {
         title: 'Documents',
         href: DocumentController.index(),
         icon: FileText,
     },
+    {
+        title: 'Activity Logs',
+        href: ActivityLogController.index(),
+        icon: ShieldCheck,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
-    {
+  /*   {
         title: 'Lexfield Attorneys',
         href: dashboard(),
         icon: FolderGit2,
@@ -58,7 +127,7 @@ const footerNavItems: NavItem[] = [
         title: 'Help',
         href: 'https://laravel.com/docs',
         icon: BookOpen,
-    },
+    }, */
 ];
 
 export function AppSidebar() {

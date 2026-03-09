@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import type { BreadcrumbItem } from '@/types';
@@ -28,18 +29,39 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function CasesIndex({
     caseFiles,
+    filters,
 }: {
     caseFiles: Paginated<CaseItem>;
+    filters: { search?: string | null };
 }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Cases" />
             <div className="flex flex-col gap-6 p-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold">Cases</h1>
-                    <Button asChild>
-                        <Link href={CaseFileController.create()}>New Case</Link>
-                    </Button>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-xl font-semibold">Cases</h1>
+                        <p className="text-sm text-slate-500">
+                            Search by title, suit number, court, or client.
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Form
+                            action={CaseFileController.index().url}
+                            method="get"
+                            className="flex items-center gap-2"
+                        >
+                            <Input
+                                name="search"
+                                placeholder="Search cases"
+                                defaultValue={filters.search ?? ''}
+                            />
+                            <Button type="submit">Search</Button>
+                        </Form>
+                        <Button asChild>
+                            <Link href={CaseFileController.create()}>New Case</Link>
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="overflow-hidden rounded-lg border">
@@ -73,6 +95,15 @@ export default function CasesIndex({
                                         {caseFile.status}
                                     </td>
                                     <td className="px-4 py-3">
+                                        <Link
+                                            className="text-sm text-primary underline-offset-4 hover:underline"
+                                            href={CaseFileController.show({
+                                                case: caseFile.id,
+                                            })}
+                                        >
+                                            View
+                                        </Link>
+                                        <span className="px-2 text-slate-300">|</span>
                                         <Link
                                             className="text-sm text-primary underline-offset-4 hover:underline"
                                             href={CaseFileController.edit({

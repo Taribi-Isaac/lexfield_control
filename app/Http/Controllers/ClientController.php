@@ -16,9 +16,21 @@ class ClientController extends Controller
     {
         Gate::authorize('permission', 'clients.view');
 
+        $search = request('search');
+
         $clients = Client::query()
+            ->when($search, function ($query, string $search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('company_name', 'like', "%{$search}%")
+                        ->orWhere('contact_person_name', 'like', "%{$search}%");
+                });
+            })
             ->orderBy('name')
             ->paginate(15)
+            ->withQueryString()
             ->through(function (Client $client): array {
                 return [
                     'id' => $client->id,
@@ -31,6 +43,9 @@ class ClientController extends Controller
 
         return Inertia::render('clients/index', [
             'clients' => $clients,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 
@@ -56,6 +71,38 @@ class ClientController extends Controller
 
         return Inertia::render('clients/edit', [
             'client' => $client,
+        ]);
+    }
+
+    public function show(Client $client): Response
+    {
+        Gate::authorize('permission', 'clients.view');
+
+        $client->load(['caseFiles', 'documentLinks.document']);
+
+        return Inertia::render('clients/show', [
+            'client' => [
+                'id' => $client->id,
+                'name' => $client->name,
+                'email' => $client->email,
+                'phone' => $client->phone,
+                'address' => $client->address,
+                'client_type' => $client->client_type,
+                'company_name' => $client->company_name,
+                'company_registration_number' => $client->company_registration_number,
+                'contact_person_name' => $client->contact_person_name,
+                'contact_person_email' => $client->contact_person_email,
+                'contact_person_phone' => $client->contact_person_phone,
+                'cases' => $client->caseFiles->map(fn ($caseFile): array => [
+                    'id' => $caseFile->id,
+                    'title' => $caseFile->title,
+                    'status' => $caseFile->status,
+                ]),
+                'documents' => $client->documentLinks->map(fn ($link): array => [
+                    'id' => $link->document?->id,
+                    'title' => $link->document?->title,
+                ])->filter(),
+            ],
         ]);
     }
 

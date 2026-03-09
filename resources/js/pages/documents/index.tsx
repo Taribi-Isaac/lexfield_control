@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import type { BreadcrumbItem } from '@/types';
@@ -26,20 +27,41 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function DocumentsIndex({
     documents,
+    filters,
 }: {
     documents: Paginated<DocumentItem>;
+    filters: { search?: string | null };
 }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Documents" />
             <div className="flex flex-col gap-6 p-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold">Documents</h1>
-                    <Button asChild>
-                        <Link href={DocumentController.create()}>
-                            Upload Document
-                        </Link>
-                    </Button>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-xl font-semibold">Documents</h1>
+                        <p className="text-sm text-slate-500">
+                            Search by title, category, or uploader.
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Form
+                            action={DocumentController.index().url}
+                            method="get"
+                            className="flex items-center gap-2"
+                        >
+                            <Input
+                                name="search"
+                                placeholder="Search documents"
+                                defaultValue={filters.search ?? ''}
+                            />
+                            <Button type="submit">Search</Button>
+                        </Form>
+                        <Button asChild>
+                            <Link href={DocumentController.create()}>
+                                Upload Document
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="overflow-hidden rounded-lg border">
@@ -65,6 +87,15 @@ export default function DocumentsIndex({
                                         {document.uploader || '—'}
                                     </td>
                                     <td className="px-4 py-3">
+                                        <Link
+                                            className="text-sm text-primary underline-offset-4 hover:underline"
+                                            href={DocumentController.show({
+                                                document: document.id,
+                                            })}
+                                        >
+                                            View
+                                        </Link>
+                                        <span className="px-2 text-slate-300">|</span>
                                         <Link
                                             className="text-sm text-primary underline-offset-4 hover:underline"
                                             href={DocumentController.download({

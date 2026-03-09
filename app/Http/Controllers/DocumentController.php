@@ -20,10 +20,23 @@ class DocumentController extends Controller
     {
         Gate::authorize('permission', 'documents.view');
 
+        $search = request('search');
+
         $documents = Document::query()
             ->with(['uploader', 'links'])
+            ->when($search, function ($query, string $search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('file_name', 'like', "%{$search}%")
+                        ->orWhereHas('uploader', function ($query) use ($search): void {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
             ->paginate(15)
+            ->withQueryString()
             ->through(function (Document $document): array {
                 return [
                     'id' => $document->id,
@@ -42,6 +55,9 @@ class DocumentController extends Controller
 
         return Inertia::render('documents/index', [
             'documents' => $documents,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 
@@ -58,6 +74,30 @@ class DocumentController extends Controller
             'clients' => Client::query()->orderBy('name')->get(['id', 'name']),
             'cases' => CaseFile::query()->orderBy('title')->get(['id', 'title']),
             'staff' => User::query()->orderBy('name')->get(['id', 'name']),
+        ]);
+    }
+
+    public function show(Document $document): Response
+    {
+        Gate::authorize('permission', 'documents.view');
+
+        $document->load(['uploader', 'links']);
+
+        return Inertia::render('documents/show', [
+            'document' => [
+                'id' => $document->id,
+                'title' => $document->title,
+                'category' => $document->category,
+                'file_name' => $document->file_name,
+                'file_size' => $document->file_size,
+                'mime_type' => $document->mime_type,
+                'uploader' => $document->uploader?->name,
+                'created_at' => $document->created_at?->toDateTimeString(),
+                'links' => $document->links->map(fn ($link): array => [
+                    'type' => $link->documentable_type,
+                    'id' => $link->documentable_id,
+                ]),
+            ],
         ]);
     }
 

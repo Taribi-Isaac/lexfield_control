@@ -48,4 +48,14 @@ class CaseFile extends Model
     {
         return $this->morphMany(DocumentLink::class, 'documentable');
     }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'filing_date' => 'date',
+        ];
+    }
 }
