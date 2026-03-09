@@ -18,6 +18,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer
+
+      - name: Install PHP dependencies (for Wayfinder)
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
       - name: Install Node dependencies
         run: npm ci
 
