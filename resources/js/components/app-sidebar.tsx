@@ -1,10 +1,8 @@
 import { Link } from '@inertiajs/react';
 import {
-    BookOpen,
     Briefcase,
     CalendarDays,
     FileText,
-    FolderGit2,
     LayoutGrid,
     FileBarChart2,
     CreditCard,

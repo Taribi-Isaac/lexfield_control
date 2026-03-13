@@ -30,7 +30,7 @@ export default function InvoiceCreate({
     cases: CaseFile[];
 }) {
     const store = InvoiceController.store();
-    const [items, setItems] = useState([{ key: Date.now() }]);
+    const [items, setItems] = useState(() => [{ key: Date.now() }]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

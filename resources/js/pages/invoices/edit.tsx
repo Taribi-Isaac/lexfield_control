@@ -50,7 +50,7 @@ export default function InvoiceEdit({
     cases: CaseFile[];
 }) {
     const update = InvoiceController.update({ invoice: invoice.id });
-    const [items, setItems] = useState(
+    const [items, setItems] = useState(() =>
         invoice.items.length > 0
             ? invoice.items.map((item) => ({ ...item, key: item.id }))
             : [{ key: Date.now() }],
