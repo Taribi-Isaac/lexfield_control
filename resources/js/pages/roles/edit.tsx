@@ -1,7 +1,6 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import type { BreadcrumbItem } from '@/types';

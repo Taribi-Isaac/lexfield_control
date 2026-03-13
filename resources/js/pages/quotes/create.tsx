@@ -30,7 +30,7 @@ export default function QuoteCreate({
     cases: CaseFile[];
 }) {
     const store = QuoteController.store();
-    const [items, setItems] = useState([{ key: Date.now() }]);
+    const [items, setItems] = useState(() => [{ key: Date.now() }]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

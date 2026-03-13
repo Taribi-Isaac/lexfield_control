@@ -50,7 +50,7 @@ export default function QuoteEdit({
     cases: CaseFile[];
 }) {
     const update = QuoteController.update({ quote: quote.id });
-    const [items, setItems] = useState(
+    const [items, setItems] = useState(() =>
         quote.items.length > 0
             ? quote.items.map((item) => ({ ...item, key: item.id }))
             : [{ key: Date.now() }],
