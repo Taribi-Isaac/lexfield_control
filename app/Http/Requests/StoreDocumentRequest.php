@@ -28,8 +28,8 @@ class StoreDocumentRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
-            'documentable_type' => ['required', Rule::in([Client::class, CaseFile::class, User::class])],
-            'documentable_id' => ['required', 'integer'],
+            'documentable_type' => ['required', Rule::in([Client::class, CaseFile::class, User::class, 'general'])],
+            'documentable_id' => ['required_if:documentable_type,'.Client::class.','.CaseFile::class.','.User::class, 'integer'],
             'file' => ['required', 'file', 'max:10240', 'mimes:pdf,doc,docx,jpg,jpeg,png'],
         ];
     }

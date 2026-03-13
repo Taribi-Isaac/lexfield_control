@@ -20,6 +20,7 @@ type Message = {
     sender?: string | null;
     sent_at?: string | null;
     attachments: { id: number; title?: string | null }[];
+    conversation_attachments: { id: number; file_name: string }[];
 };
 
 type Conversation = {
@@ -90,21 +91,51 @@ export default function MessagesShow({
                                 <p className="mt-2 text-sm text-slate-700">
                                     {message.content}
                                 </p>
-                                {message.attachments.length > 0 && (
+                                {(message.attachments.length > 0 ||
+                                    message.conversation_attachments.length >
+                                        0) && (
                                     <div className="mt-2 text-xs text-slate-500">
                                         Attachments:{' '}
-                                        {message.attachments.map((attachment) => (
-                                            <span key={attachment.id} className="mr-2">
-                                                <a
-                                                    href={DocumentController.download({
-                                                        document: attachment.id,
-                                                    }).url}
-                                                    className="text-blue-700 hover:underline"
+                                        {message.attachments.map(
+                                            (attachment) => (
+                                                <span
+                                                    key={attachment.id}
+                                                    className="mr-2"
                                                 >
-                                                    {attachment.title}
-                                                </a>
-                                            </span>
-                                        ))}
+                                                    <a
+                                                        href={
+                                                            DocumentController.download(
+                                                                {
+                                                                    document:
+                                                                        attachment.id,
+                                                                },
+                                                            ).url
+                                                        }
+                                                        className="text-blue-700 hover:underline"
+                                                    >
+                                                        {attachment.title}
+                                                    </a>
+                                                </span>
+                                            ),
+                                        )}
+                                        {message.conversation_attachments.map(
+                                            (attachment) => (
+                                                <span
+                                                    key={attachment.id}
+                                                    className="mr-2"
+                                                >
+                                                    <a
+                                                        href={route(
+                                                            'conversation-attachments.download',
+                                                            attachment.id,
+                                                        )}
+                                                        className="text-blue-700 hover:underline"
+                                                    >
+                                                        {attachment.file_name}
+                                                    </a>
+                                                </span>
+                                            ),
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -114,7 +145,12 @@ export default function MessagesShow({
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Send message</h2>
-                    <Form action={send.url} method={send.method} className="grid gap-4">
+                    <Form
+                        action={send.url}
+                        method={send.method}
+                        encType="multipart/form-data"
+                        className="grid gap-4"
+                    >
                         {({ processing, errors }) => (
                             <>
                                 <div className="grid gap-2">
@@ -128,7 +164,9 @@ export default function MessagesShow({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="attachments">Attach documents</Label>
+                                    <Label htmlFor="attachments">
+                                        Attach documents (existing)
+                                    </Label>
                                     <select
                                         id="attachments"
                                         name="attachments[]"
@@ -136,12 +174,28 @@ export default function MessagesShow({
                                         className="min-h-[120px] rounded-md border bg-transparent px-3 text-sm"
                                     >
                                         {documents.map((document) => (
-                                            <option key={document.id} value={document.id}>
+                                            <option
+                                                key={document.id}
+                                                value={document.id}
+                                            >
                                                 {document.title}
                                             </option>
                                         ))}
                                     </select>
                                     <InputError message={errors.attachments} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="files">
+                                        Attach files (from device)
+                                    </Label>
+                                    <Input
+                                        id="files"
+                                        name="files[]"
+                                        type="file"
+                                        multiple
+                                    />
+                                    <InputError message={errors.files} />
                                 </div>
 
                                 <div className="flex items-center gap-4">

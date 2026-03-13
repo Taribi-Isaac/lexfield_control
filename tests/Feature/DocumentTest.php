@@ -7,6 +7,8 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -28,6 +30,24 @@ class DocumentTest extends TestCase
         $response->assertInertia(fn (Assert $page) => $page
             ->component('documents/show')
             ->where('document.id', $document->id));
+    }
+
+    public function test_can_upload_general_document(): void
+    {
+        Storage::fake('local');
+        $user = $this->createUserWithPermissions(['documents.create', 'documents.view']);
+
+        $response = $this->actingAs($user)->post(route('documents.store'), [
+            'title' => 'General Doc',
+            'documentable_type' => 'general',
+            'file' => UploadedFile::fake()->create('general.pdf', 100),
+        ]);
+
+        $response->assertRedirect(route('documents.index'));
+        $this->assertDatabaseHas('documents', ['title' => 'General Doc']);
+
+        $document = Document::where('title', 'General Doc')->first();
+        $this->assertCount(0, $document->links);
     }
 
     private function createUserWithPermissions(array $permissionSlugs): User

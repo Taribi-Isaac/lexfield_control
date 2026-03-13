@@ -48,11 +48,13 @@ export default function DocumentCreate({
     const [documentableId, setDocumentableId] = useState('');
 
     const options =
-        documentableType === documentableTypes[0]?.value
+        documentableType === 'App\\Models\\Client'
             ? clients
-            : documentableType === documentableTypes[1]?.value
+            : documentableType === 'App\\Models\\CaseFile'
               ? cases
-              : staff;
+              : documentableType === 'App\\Models\\User'
+                ? staff
+                : [];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -112,30 +114,37 @@ export default function DocumentCreate({
                                     </select>
                                     <InputError message={errors.documentable_type} />
                                 </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="documentable_id">
-                                        Link target
-                                    </Label>
-                                    <select
-                                        id="documentable_id"
-                                        name="documentable_id"
-                                        className="h-9 rounded-md border bg-transparent px-3 text-sm"
-                                        value={documentableId}
-                                        onChange={(event) =>
-                                            setDocumentableId(
-                                                event.target.value,
-                                            )
-                                        }
-                                    >
-                                        <option value="">Select</option>
-                                        {options.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name ?? item.title}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <InputError message={errors.documentable_id} />
-                                </div>
+                                {documentableType !== 'general' && (
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="documentable_id">
+                                            Link target
+                                        </Label>
+                                        <select
+                                            id="documentable_id"
+                                            name="documentable_id"
+                                            className="h-9 rounded-md border bg-transparent px-3 text-sm"
+                                            value={documentableId}
+                                            onChange={(event) =>
+                                                setDocumentableId(
+                                                    event.target.value,
+                                                )
+                                            }
+                                        >
+                                            <option value="">Select</option>
+                                            {options.map((item) => (
+                                                <option
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.name ?? item.title}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <InputError
+                                            message={errors.documentable_id}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid gap-2">
