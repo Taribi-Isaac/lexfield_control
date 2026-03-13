@@ -32,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('messages', ConversationController::class)->only(['index', 'create', 'store', 'show']);
     Route::post('messages/{conversation}/send', [MessageController::class, 'store'])
         ->name('messages.send');
+    Route::get('conversation-attachments/{attachment}/download', [\App\Http\Controllers\ConversationAttachmentController::class, 'download'])
+        ->name('conversation-attachments.download');
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     Route::resource('notification-letters', NotificationLetterController::class)
         ->only(['index', 'create', 'store', 'show', 'edit', 'update']);

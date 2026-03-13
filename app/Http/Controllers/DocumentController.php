@@ -70,6 +70,7 @@ class DocumentController extends Controller
                 ['label' => 'Client', 'value' => Client::class],
                 ['label' => 'Case', 'value' => CaseFile::class],
                 ['label' => 'Staff', 'value' => User::class],
+                ['label' => 'General', 'value' => 'general'],
             ],
             'clients' => Client::query()->orderBy('name')->get(['id', 'name']),
             'cases' => CaseFile::query()->orderBy('title')->get(['id', 'title']),
@@ -105,17 +106,20 @@ class DocumentController extends Controller
     {
         $validated = $request->validated();
 
-        $documentable = match ($validated['documentable_type']) {
-            Client::class => Client::query()->findOrFail($validated['documentable_id']),
-            CaseFile::class => CaseFile::query()->findOrFail($validated['documentable_id']),
-            User::class => User::query()->findOrFail($validated['documentable_id']),
-            default => null,
-        };
+        $documentable = null;
+        if ($validated['documentable_type'] !== 'general') {
+            $documentable = match ($validated['documentable_type']) {
+                Client::class => Client::query()->findOrFail($validated['documentable_id']),
+                CaseFile::class => CaseFile::query()->findOrFail($validated['documentable_id']),
+                User::class => User::query()->findOrFail($validated['documentable_id']),
+                default => null,
+            };
 
-        if ($documentable === null) {
-            return redirect()
-                ->back()
-                ->withErrors(['documentable_type' => 'Invalid document link type.']);
+            if ($documentable === null) {
+                return redirect()
+                    ->back()
+                    ->withErrors(['documentable_type' => 'Invalid document link type.']);
+            }
         }
 
         $file = $request->file('file');
@@ -133,10 +137,12 @@ class DocumentController extends Controller
             'description' => null,
         ]);
 
-        $document->links()->create([
-            'documentable_type' => $documentable::class,
-            'documentable_id' => $documentable->id,
-        ]);
+        if ($documentable) {
+            $document->links()->create([
+                'documentable_type' => $documentable::class,
+                'documentable_id' => $documentable->id,
+            ]);
+        }
 
         return redirect()
             ->route('documents.index')

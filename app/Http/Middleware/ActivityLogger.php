@@ -44,7 +44,32 @@ class ActivityLogger
             'subject_id' => null,
             'description' => $routeName ? "Performed {$routeName}" : 'Performed action',
             'metadata' => [
-                'payload' => $request->except(['password', 'password_confirmation']),
+                'payload' => collect($request->except(['password', 'password_confirmation']))
+                    ->map(function ($value) {
+                        if ($value instanceof \Illuminate\Http\UploadedFile) {
+                            return [
+                                'name' => $value->getClientOriginalName(),
+                                'size' => $value->getSize(),
+                                'mime' => $value->getMimeType(),
+                            ];
+                        }
+
+                        if (is_array($value)) {
+                            return collect($value)->map(function ($item) {
+                                if ($item instanceof \Illuminate\Http\UploadedFile) {
+                                    return [
+                                        'name' => $item->getClientOriginalName(),
+                                        'size' => $item->getSize(),
+                                        'mime' => $item->getMimeType(),
+                                    ];
+                                }
+
+                                return $item;
+                            })->all();
+                        }
+
+                        return $value;
+                    })->all(),
             ],
         ]);
 
