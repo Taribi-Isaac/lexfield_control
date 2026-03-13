@@ -12,7 +12,7 @@ import {
 import { Trash2 } from 'lucide-react';
 
 type DeleteActionProps = {
-    action: { url: string; method: string };
+    action: { url?: string; action?: string; method: string };
     title: string;
     description?: string;
     triggerText?: string;
@@ -44,7 +44,7 @@ export default function DeleteAction({
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
 
-                <Form {...action}>
+                <Form action={action.action ?? action.url} method={action.method as any}>
                     {({ processing }) => (
                         <DialogFooter className="gap-2">
                             <DialogClose asChild>

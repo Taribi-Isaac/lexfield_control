@@ -71,7 +71,7 @@ export default function NotificationLetterShow({ letter }: { letter: Letter }) {
                             </a>
                         </Button>
                         <Form
-                            {...NotificationLetterController.duplicate({
+                            {...NotificationLetterController.duplicate.form({
                                 notification_letter: letter.id,
                             })}
                         >
