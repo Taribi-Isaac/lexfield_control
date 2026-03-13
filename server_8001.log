@@ -1,0 +1,43 @@
+
+   INFO  Server running on [http://127.0.0.1:8001].
+
+  Press Ctrl+C to stop the server
+
+  2026-03-13 15:59:06 /login ..................................... ~ 500.56ms
+  2026-03-13 15:59:06 /build/assets/app-CeIZ2KIU.css ............... ~ 0.06ms
+  2026-03-13 15:59:06 /build/assets/app-CnVOkCgr.js ................ ~ 0.11ms
+  2026-03-13 15:59:06 /build/assets/login-C61iz0Bu.js .............. ~ 0.66ms
+  2026-03-13 15:59:06 /build/assets/input-error-B_6-mggu.js ........ ~ 1.37ms
+  2026-03-13 15:59:06 /build/assets/createLucideIcon-wr8iNtiK.js ... ~ 1.65ms
+  2026-03-13 15:59:06 /build/assets/index-ClK9B8YV.js .............. ~ 1.95ms
+  2026-03-13 15:59:06 /build/assets/eye-lU60pkYF.js ................ ~ 2.38ms
+  2026-03-13 15:59:06 /build/assets/input-8dC2QSCk.js .............. ~ 0.12ms
+  2026-03-13 15:59:06 /build/assets/label-sel95UpM.js .............. ~ 0.53ms
+  2026-03-13 15:59:06 /build/assets/spinner-T05ViM3Z.js ............ ~ 1.19ms
+  2026-03-13 15:59:06 /build/assets/auth-layout-B7eEDuRh.js ........ ~ 1.68ms
+  2026-03-13 15:59:06 /build/assets/index-fUTKCs34.js .............. ~ 1.97ms
+  2026-03-13 15:59:06 /build/assets/loader-circle-Bia8NTDn.js ...... ~ 0.05ms
+  2026-03-13 15:59:06 /build/assets/index-JYOEzvXk.js .............. ~ 2.66ms
+  2026-03-13 15:59:07 /build/assets/app-CeIZ2KIU.css ............... ~ 0.35ms
+  2026-03-13 15:59:07 /BG-IMAGE.png ................................ ~ 0.21ms
+  2026-03-13 15:59:07 /LEXFIELD-LOGO.png ........................... ~ 0.12ms
+  2026-03-13 15:59:07 /login ........................................... ~ 1s
+  2026-03-13 15:59:08 /dashboard ................................... ~ 0.07ms
+  2026-03-13 15:59:08 /build/assets/dashboard-BLPomlAv.js .......... ~ 0.08ms
+  2026-03-13 15:59:08 /build/assets/card-BFwHJG9v.js ............... ~ 0.41ms
+  2026-03-13 15:59:08 /build/assets/app-layout-BGNZMwa2.js ......... ~ 0.85ms
+  2026-03-13 15:59:08 /LEXFIELD-ICON.png ........................... ~ 0.04ms
+  2026-03-13 15:59:08 /documents/create ............................ ~ 0.05ms
+  2026-03-13 15:59:08 /build/assets/app-CeIZ2KIU.css ............... ~ 0.04ms
+  2026-03-13 15:59:08 /build/assets/create-CSlCS0W7.js ............. ~ 0.10ms
+  2026-03-13 15:59:08 /build/assets/app-layout-BGNZMwa2.js ......... ~ 0.47ms
+  2026-03-13 15:59:08 /build/assets/input-error-B_6-mggu.js ........ ~ 0.72ms
+  2026-03-13 15:59:08 /build/assets/app-CnVOkCgr.js ................ ~ 1.03ms
+  2026-03-13 15:59:08 /build/assets/createLucideIcon-wr8iNtiK.js ... ~ 1.44ms
+  2026-03-13 15:59:08 /build/assets/input-8dC2QSCk.js .............. ~ 1.62ms
+  2026-03-13 15:59:08 /build/assets/label-sel95UpM.js .............. ~ 0.08ms
+  2026-03-13 15:59:08 /build/assets/index-ClK9B8YV.js .............. ~ 0.50ms
+  2026-03-13 15:59:08 /build/assets/index-fUTKCs34.js .............. ~ 2.01ms
+  2026-03-13 15:59:08 /build/assets/index-JYOEzvXk.js .............. ~ 2.53ms
+  2026-03-13 15:59:08 /build/assets/app-CeIZ2KIU.css ............... ~ 0.04ms
+  2026-03-13 15:59:08 /LEXFIELD-ICON.png ........................... ~ 0.04ms

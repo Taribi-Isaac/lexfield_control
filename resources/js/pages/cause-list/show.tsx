@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -53,6 +54,13 @@ export default function CauseListShow({ entry }: { entry: CauseListEntry }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={CauseListController.destroy({
+                                cause_list: entry.id,
+                            })}
+                            title="Delete Cause List Entry"
+                            description={`Are you sure you want to delete the entry for ${entry.case_title}?`}
+                        />
                     </div>
                 </div>
 

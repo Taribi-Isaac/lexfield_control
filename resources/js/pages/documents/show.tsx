@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -54,6 +55,13 @@ export default function DocumentShow({ document }: { document: Document }) {
                                 Download
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={DocumentController.destroy({
+                                document: document.id,
+                            })}
+                            title="Delete Document"
+                            description={`Are you sure you want to delete ${document.title}?`}
+                        />
                     </div>
                 </div>
 

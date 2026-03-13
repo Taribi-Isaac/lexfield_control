@@ -1,5 +1,6 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import StaffController from '@/actions/App/Http/Controllers/StaffController';
+import DeleteAction from '@/components/delete-action';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,9 +57,18 @@ export default function StaffEdit({
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-semibold">Edit Staff</h1>
-                    <Button asChild variant="outline">
-                        <Link href={StaffController.index()}>Back</Link>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button asChild variant="outline">
+                            <Link href={StaffController.index()}>Back</Link>
+                        </Button>
+                        <DeleteAction
+                            action={StaffController.destroy({
+                                staff: staff.id,
+                            })}
+                            title="Delete Staff"
+                            description={`Are you sure you want to delete ${staff.name}? This will remove their profile and access.`}
+                        />
+                    </div>
                 </div>
 
                 <Form
