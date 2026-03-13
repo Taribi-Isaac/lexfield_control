@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import MessageController from '@/actions/App/Http/Controllers/MessageController';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import ConversationAttachmentController from '@/actions/App/Http/Controllers/ConversationAttachmentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Document = {
@@ -125,10 +126,11 @@ export default function MessagesShow({
                                                     className="mr-2"
                                                 >
                                                     <a
-                                                        href={route(
-                                                            'conversation-attachments.download',
-                                                            attachment.id,
-                                                        )}
+                                                        href={
+                                                            ConversationAttachmentController.download(
+                                                                attachment.id,
+                                                            ).url
+                                                        }
                                                         className="text-blue-700 hover:underline"
                                                     >
                                                         {attachment.file_name}
