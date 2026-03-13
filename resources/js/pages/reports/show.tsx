@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -56,6 +57,13 @@ export default function ReportShow({ report }: { report: Report }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={ReportController.destroy({
+                                report: report.id,
+                            })}
+                            title="Delete Report"
+                            description={`Are you sure you want to delete ${report.title}?`}
+                        />
                     </div>
                 </div>
 

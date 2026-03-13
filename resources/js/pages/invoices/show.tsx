@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -115,6 +116,13 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={InvoiceController.destroy({
+                                invoice: invoice.id,
+                            })}
+                            title="Delete Invoice"
+                            description={`Are you sure you want to delete invoice ${invoice.invoice_number}?`}
+                        />
                     </div>
                 </div>
 

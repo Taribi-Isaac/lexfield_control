@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import ClientController from '@/actions/App/Http/Controllers/ClientController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -56,6 +57,13 @@ export default function ClientShow({ client }: { client: Client }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={ClientController.destroy({
+                                client: client.id,
+                            })}
+                            title="Delete Client"
+                            description={`Are you sure you want to delete ${client.name}?`}
+                        />
                     </div>
                 </div>
 

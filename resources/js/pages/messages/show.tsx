@@ -3,6 +3,7 @@ import ConversationAttachmentController from '@/actions/App/Http/Controllers/Con
 import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import MessageController from '@/actions/App/Http/Controllers/MessageController';
+import DeleteAction from '@/components/delete-action';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -71,9 +72,20 @@ export default function MessagesShow({
                                 : 'Direct chat'}
                         </p>
                     </div>
-                    <Button asChild variant="outline">
-                        <Link href={ConversationController.index()}>Back</Link>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button asChild variant="outline">
+                            <Link href={ConversationController.index()}>
+                                Back
+                            </Link>
+                        </Button>
+                        <DeleteAction
+                            action={ConversationController.destroy({
+                                message: conversation.id,
+                            })}
+                            title="Delete Conversation"
+                            description="Are you sure you want to delete this conversation? This will delete all messages within it."
+                        />
+                    </div>
                 </div>
 
                 <div className="rounded-lg border p-4">

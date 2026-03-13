@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -58,6 +59,13 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={CaseFileController.destroy({
+                                case: caseFile.id,
+                            })}
+                            title="Delete Case"
+                            description={`Are you sure you want to delete ${caseFile.title}?`}
+                        />
                     </div>
                 </div>
 
