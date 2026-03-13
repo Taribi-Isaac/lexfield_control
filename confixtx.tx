@@ -2,5 +2,5 @@ cd public_html/adman.lexfieldattorneys.com/lexfield_ftpUser
 
 
 git add .
-git commit -m "deployment test"
+git commit -m "deployment test ."
 git push
