@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
+import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import type { BreadcrumbItem } from '@/types';
 
 type Quote = {
@@ -45,7 +45,9 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{quote.quote_number}</h1>
+                        <h1 className="text-xl font-semibold">
+                            {quote.quote_number}
+                        </h1>
                         <p className="text-sm text-slate-500">
                             {quote.title} · {quote.status}
                         </p>
@@ -56,7 +58,11 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
                         </Button>
                         <Button asChild variant="outline">
                             <a
-                                href={QuoteController.download({ quote: quote.id }).url}
+                                href={
+                                    QuoteController.download({
+                                        quote: quote.id,
+                                    }).url
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -64,7 +70,9 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
                             </a>
                         </Button>
                         <Button asChild>
-                            <Link href={QuoteController.edit({ quote: quote.id })}>
+                            <Link
+                                href={QuoteController.edit({ quote: quote.id })}
+                            >
                                 Edit
                             </Link>
                         </Button>
@@ -116,9 +124,15 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
                                         <td className="px-4 py-3">
                                             {item.description}
                                         </td>
-                                        <td className="px-4 py-3">{item.quantity}</td>
-                                        <td className="px-4 py-3">{item.unit_price}</td>
-                                        <td className="px-4 py-3">{item.line_total}</td>
+                                        <td className="px-4 py-3">
+                                            {item.quantity}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {item.unit_price}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {item.line_total}
+                                        </td>
                                     </tr>
                                 ))}
                                 {quote.items.length === 0 && (
@@ -145,7 +159,9 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Notes</h2>
-                    <p className="text-sm text-slate-600">{quote.notes ?? '—'}</p>
+                    <p className="text-sm text-slate-600">
+                        {quote.notes ?? '—'}
+                    </p>
                 </div>
             </div>
         </AppLayout>

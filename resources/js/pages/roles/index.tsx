@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
+import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import type { BreadcrumbItem } from '@/types';
 
 type Role = {
@@ -24,7 +24,9 @@ export default function RolesIndex({ roles }: { roles: Role[] }) {
             <Head title="Roles & Permissions" />
             <div className="flex flex-col gap-6 p-4">
                 <div>
-                    <h1 className="text-xl font-semibold">Roles & Permissions</h1>
+                    <h1 className="text-xl font-semibold">
+                        Roles & Permissions
+                    </h1>
                     <p className="text-sm text-slate-500">
                         Manage access for staff roles.
                     </p>
@@ -51,7 +53,11 @@ export default function RolesIndex({ roles }: { roles: Role[] }) {
                                         {role.permissions_count}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Button asChild variant="outline" size="sm">
+                                        <Button
+                                            asChild
+                                            variant="outline"
+                                            size="sm"
+                                        >
                                             <Link
                                                 href={RoleController.edit({
                                                     role: role.id,

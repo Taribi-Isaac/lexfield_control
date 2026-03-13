@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type InvoiceItem = {
     id: number;
@@ -60,7 +61,9 @@ export default function InvoicesIndex({
                             <Button type="submit">Search</Button>
                         </Form>
                         <Button asChild>
-                            <Link href={InvoiceController.create()}>New Invoice</Link>
+                            <Link href={InvoiceController.create()}>
+                                New Invoice
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -94,29 +97,50 @@ export default function InvoicesIndex({
                                     <td className="px-4 py-3">
                                         {invoice.case ?? '—'}
                                     </td>
-                                    <td className="px-4 py-3">{invoice.status}</td>
-                                    <td className="px-4 py-3">{invoice.total}</td>
+                                    <td className="px-4 py-3">
+                                        {invoice.status}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        {invoice.total}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {invoice.due_date ?? '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={InvoiceController.show({
-                                                invoice: invoice.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={InvoiceController.edit({
-                                                invoice: invoice.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={InvoiceController.show({
+                                                    invoice: invoice.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={InvoiceController.edit({
+                                                    invoice: invoice.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={InvoiceController.destroy(
+                                                    {
+                                                        invoice: invoice.id,
+                                                    },
+                                                )}
+                                                title="Delete Invoice"
+                                                description={`Are you sure you want to delete ${invoice.invoice_number}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

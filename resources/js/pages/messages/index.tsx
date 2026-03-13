@@ -1,8 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
+import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type Conversation = {
     id: number;
@@ -50,31 +51,49 @@ export default function MessagesIndex({
                         </div>
                     )}
                     {conversations.map((conversation) => (
-                        <Link
+                        <div
                             key={conversation.id}
-                            href={ConversationController.show({
-                                message: conversation.id,
-                            })}
-                            className="rounded-lg border p-4 transition hover:border-blue-300"
+                            className="group flex items-center justify-between rounded-lg border p-4 transition hover:border-blue-300"
                         >
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-semibold text-slate-900">
-                                        {conversation.title ??
-                                            conversation.participants
-                                                .map((participant) => participant.name)
-                                                .filter(Boolean)
-                                                .join(', ')}
-                                    </p>
-                                    <p className="text-sm text-slate-500">
-                                        {conversation.last_message ?? 'No messages yet.'}
-                                    </p>
+                            <Link
+                                href={ConversationController.show({
+                                    message: conversation.id,
+                                })}
+                                className="flex-1"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="font-semibold text-slate-900">
+                                            {conversation.title ??
+                                                conversation.participants
+                                                    .map(
+                                                        (participant) =>
+                                                            participant.name,
+                                                    )
+                                                    .filter(Boolean)
+                                                    .join(', ')}
+                                        </p>
+                                        <p className="text-sm text-slate-500">
+                                            {conversation.last_message ??
+                                                'No messages yet.'}
+                                        </p>
+                                    </div>
+                                    <span className="text-xs text-slate-400">
+                                        {conversation.last_sent_at ?? ''}
+                                    </span>
                                 </div>
-                                <span className="text-xs text-slate-400">
-                                    {conversation.last_sent_at ?? ''}
-                                </span>
+                            </Link>
+                            <div className="ml-4 opacity-0 transition group-hover:opacity-100">
+                                <DeleteAction
+                                    action={ConversationController.destroy({
+                                        message: conversation.id,
+                                    })}
+                                    title="Delete Conversation"
+                                    description="Are you sure you want to delete this conversation? This will delete all messages within it."
+                                    variant="icon"
+                                />
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
             </div>

@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import type { BreadcrumbItem } from '@/types';
 
 type Client = {
@@ -46,7 +46,11 @@ export default function ClientEdit({ client }: { client: Client }) {
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -68,7 +72,9 @@ export default function ClientEdit({ client }: { client: Client }) {
                                     className="h-9 rounded-md border bg-transparent px-3 text-sm"
                                     defaultValue={client.client_type}
                                 >
-                                    <option value="Individual">Individual</option>
+                                    <option value="Individual">
+                                        Individual
+                                    </option>
                                     <option value="Corporate">Corporate</option>
                                 </select>
                                 <InputError message={errors.client_type} />

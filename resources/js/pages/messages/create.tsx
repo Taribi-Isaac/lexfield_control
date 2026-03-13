@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import type { BreadcrumbItem } from '@/types';
 
 type Staff = {
@@ -37,7 +37,11 @@ export default function MessagesCreate({ staff }: { staff: Staff[] }) {
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -55,7 +59,9 @@ export default function MessagesCreate({ staff }: { staff: Staff[] }) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="title">Group title (optional)</Label>
+                                <Label htmlFor="title">
+                                    Group title (optional)
+                                </Label>
                                 <Input id="title" name="title" />
                                 <InputError message={errors.title} />
                             </div>

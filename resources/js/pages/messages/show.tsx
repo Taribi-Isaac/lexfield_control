@@ -1,13 +1,13 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ConversationAttachmentController from '@/actions/App/Http/Controllers/ConversationAttachmentController';
+import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import MessageController from '@/actions/App/Http/Controllers/MessageController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
-import MessageController from '@/actions/App/Http/Controllers/MessageController';
-import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
-import ConversationAttachmentController from '@/actions/App/Http/Controllers/ConversationAttachmentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Document = {
@@ -66,7 +66,9 @@ export default function MessagesShow({
                                     .join(', ')}
                         </h1>
                         <p className="text-sm text-slate-500">
-                            {conversation.type === 'group' ? 'Group chat' : 'Direct chat'}
+                            {conversation.type === 'group'
+                                ? 'Group chat'
+                                : 'Direct chat'}
                         </p>
                     </div>
                     <Button asChild variant="outline">
@@ -77,10 +79,15 @@ export default function MessagesShow({
                 <div className="rounded-lg border p-4">
                     <div className="space-y-4">
                         {conversation.messages.length === 0 && (
-                            <p className="text-sm text-slate-500">No messages yet.</p>
+                            <p className="text-sm text-slate-500">
+                                No messages yet.
+                            </p>
                         )}
                         {conversation.messages.map((message) => (
-                            <div key={message.id} className="rounded-md border p-3">
+                            <div
+                                key={message.id}
+                                className="rounded-md border p-3"
+                            >
                                 <div className="flex items-center justify-between">
                                     <p className="font-semibold text-slate-900">
                                         {message.sender ?? 'Unknown'}
@@ -128,7 +135,10 @@ export default function MessagesShow({
                                                     <a
                                                         href={
                                                             ConversationAttachmentController.download(
-                                                                attachment.id,
+                                                                {
+                                                                    attachment:
+                                                                        attachment.id,
+                                                                },
                                                             ).url
                                                         }
                                                         className="text-blue-700 hover:underline"

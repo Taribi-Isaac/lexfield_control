@@ -1,8 +1,8 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import RoleController from '@/actions/App/Http/Controllers/RoleController';
 import type { BreadcrumbItem } from '@/types';
 
 type Permission = {
@@ -58,33 +58,46 @@ export default function RoleEdit({
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-6">
                                 {permissions.map((group) => (
-                                    <div key={group.module} className="rounded-lg border p-4">
+                                    <div
+                                        key={group.module}
+                                        className="rounded-lg border p-4"
+                                    >
                                         <h2 className="mb-3 font-semibold">
                                             {group.module}
                                         </h2>
                                         <div className="grid gap-2 md:grid-cols-2">
-                                            {group.permissions.map((permission) => (
-                                                <label
-                                                    key={permission.id}
-                                                    className="flex items-center gap-2 text-sm"
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        name="permissions[]"
-                                                        value={permission.id}
-                                                        defaultChecked={role.permissions.includes(
-                                                            permission.id,
-                                                        )}
-                                                        className="h-4 w-4"
-                                                    />
-                                                    <span>{permission.name}</span>
-                                                </label>
-                                            ))}
+                                            {group.permissions.map(
+                                                (permission) => (
+                                                    <label
+                                                        key={permission.id}
+                                                        className="flex items-center gap-2 text-sm"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            name="permissions[]"
+                                                            value={
+                                                                permission.id
+                                                            }
+                                                            defaultChecked={role.permissions.includes(
+                                                                permission.id,
+                                                            )}
+                                                            className="h-4 w-4"
+                                                        />
+                                                        <span>
+                                                            {permission.name}
+                                                        </span>
+                                                    </label>
+                                                ),
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -93,7 +106,9 @@ export default function RoleEdit({
                             <InputError message={errors.permissions} />
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Save permissions</Button>
+                                <Button disabled={processing}>
+                                    Save permissions
+                                </Button>
                             </div>
                         </>
                     )}

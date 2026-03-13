@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import type { BreadcrumbItem } from '@/types';
 
 type Role = {
@@ -61,7 +61,11 @@ export default function StaffEdit({
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -121,7 +125,8 @@ export default function StaffEdit({
                                 </div>
                                 <InputError message={errors.roles} />
                                 <p className="text-xs text-slate-500">
-                                    Manage role permissions under Roles &amp; Permissions.
+                                    Manage role permissions under Roles &amp;
+                                    Permissions.
                                 </p>
                             </div>
 
@@ -137,7 +142,9 @@ export default function StaffEdit({
                                     />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="department">Department</Label>
+                                    <Label htmlFor="department">
+                                        Department
+                                    </Label>
                                     <Input
                                         id="department"
                                         name="department"
@@ -157,8 +164,7 @@ export default function StaffEdit({
                                         id="employment_type"
                                         name="employment_type"
                                         defaultValue={
-                                            staff.profile?.employment_type ??
-                                            ''
+                                            staff.profile?.employment_type ?? ''
                                         }
                                     />
                                 </div>
