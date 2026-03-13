@@ -111,7 +111,7 @@ export default function NotificationLettersIndex({
                                                 |
                                             </span>
                                             <Form
-                                                {...NotificationLetterController.duplicate(
+                                                {...NotificationLetterController.duplicate.form(
                                                     {
                                                         notification_letter:
                                                             letter.id,
