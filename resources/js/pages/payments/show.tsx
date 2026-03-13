@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Payment = {
@@ -43,7 +44,8 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
                             {payment.receipt_number}
                         </h1>
                         <p className="text-sm text-slate-500">
-                            {payment.method ?? 'Payment'} · {payment.paid_at ?? '—'}
+                            {payment.method ?? 'Payment'} ·{' '}
+                            {payment.paid_at ?? '—'}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -52,9 +54,11 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
                         </Button>
                         <Button asChild variant="outline">
                             <a
-                                href={PaymentController.receipt({
-                                    payment: payment.id,
-                                }).url}
+                                href={
+                                    PaymentController.receipt({
+                                        payment: payment.id,
+                                    }).url
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -62,10 +66,21 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
                             </a>
                         </Button>
                         <Button asChild>
-                            <Link href={PaymentController.edit({ payment: payment.id })}>
+                            <Link
+                                href={PaymentController.edit({
+                                    payment: payment.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={PaymentController.destroy({
+                                payment: payment.id,
+                            })}
+                            title="Delete Payment"
+                            description={`Are you sure you want to delete payment ${payment.receipt_number}?`}
+                        />
                     </div>
                 </div>
 
@@ -101,7 +116,9 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Notes</h2>
-                    <p className="text-sm text-slate-600">{payment.notes ?? '—'}</p>
+                    <p className="text-sm text-slate-600">
+                        {payment.notes ?? '—'}
+                    </p>
                 </div>
             </div>
         </AppLayout>

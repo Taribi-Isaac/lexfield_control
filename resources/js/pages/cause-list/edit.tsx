@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import type { BreadcrumbItem } from '@/types';
 
 type Lawyer = {
@@ -50,13 +50,19 @@ export default function CauseListEdit({
             <Head title="Edit Cause List Entry" />
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold">Edit Cause List Entry</h1>
+                    <h1 className="text-xl font-semibold">
+                        Edit Cause List Entry
+                    </h1>
                     <Button asChild variant="outline">
                         <Link href={CauseListController.index()}>Back</Link>
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2 md:grid-cols-2">
@@ -107,7 +113,9 @@ export default function CauseListEdit({
 
                             <div className="grid gap-2 md:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="suit_number">Suit number</Label>
+                                    <Label htmlFor="suit_number">
+                                        Suit number
+                                    </Label>
                                     <Input
                                         id="suit_number"
                                         name="suit_number"
@@ -116,33 +124,48 @@ export default function CauseListEdit({
                                     <InputError message={errors.suit_number} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="assigned_lawyer_id">Assigned lawyer</Label>
+                                    <Label htmlFor="assigned_lawyer_id">
+                                        Assigned lawyer
+                                    </Label>
                                     <select
                                         id="assigned_lawyer_id"
                                         name="assigned_lawyer_id"
                                         className="h-9 rounded-md border bg-transparent px-3 text-sm"
-                                        defaultValue={entry.assigned_lawyer_id ?? ''}
+                                        defaultValue={
+                                            entry.assigned_lawyer_id ?? ''
+                                        }
                                     >
                                         <option value="">Select lawyer</option>
                                         {lawyers.map((lawyer) => (
-                                            <option key={lawyer.id} value={lawyer.id}>
+                                            <option
+                                                key={lawyer.id}
+                                                value={lawyer.id}
+                                            >
                                                 {lawyer.name}
                                             </option>
                                         ))}
                                     </select>
-                                    <InputError message={errors.assigned_lawyer_id} />
+                                    <InputError
+                                        message={errors.assigned_lawyer_id}
+                                    />
                                 </div>
                             </div>
 
                             <div className="grid gap-2 md:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="business_of_day">Business of the day</Label>
+                                    <Label htmlFor="business_of_day">
+                                        Business of the day
+                                    </Label>
                                     <Input
                                         id="business_of_day"
                                         name="business_of_day"
-                                        defaultValue={entry.business_of_day ?? ''}
+                                        defaultValue={
+                                            entry.business_of_day ?? ''
+                                        }
                                     />
-                                    <InputError message={errors.business_of_day} />
+                                    <InputError
+                                        message={errors.business_of_day}
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="status">Status</Label>
@@ -152,10 +175,18 @@ export default function CauseListEdit({
                                         className="h-9 rounded-md border bg-transparent px-3 text-sm"
                                         defaultValue={entry.status}
                                     >
-                                        <option value="Scheduled">Scheduled</option>
-                                        <option value="In Court">In Court</option>
-                                        <option value="Adjourned">Adjourned</option>
-                                        <option value="Completed">Completed</option>
+                                        <option value="Scheduled">
+                                            Scheduled
+                                        </option>
+                                        <option value="In Court">
+                                            In Court
+                                        </option>
+                                        <option value="Adjourned">
+                                            Adjourned
+                                        </option>
+                                        <option value="Completed">
+                                            Completed
+                                        </option>
                                     </select>
                                     <InputError message={errors.status} />
                                 </div>

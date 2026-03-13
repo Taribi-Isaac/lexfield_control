@@ -1,9 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { Copy } from 'lucide-react';
+import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type Letter = {
     id: number;
@@ -38,7 +40,9 @@ export default function NotificationLettersIndex({
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-xl font-semibold">Notification Letters</h1>
+                        <h1 className="text-xl font-semibold">
+                            Notification Letters
+                        </h1>
                         <p className="text-sm text-slate-500">
                             Create and manage notification letters.
                         </p>
@@ -84,19 +88,62 @@ export default function NotificationLettersIndex({
                                     <td className="px-4 py-3">
                                         {letter.client ?? '—'}
                                     </td>
-                                    <td className="px-4 py-3">{letter.case ?? '—'}</td>
+                                    <td className="px-4 py-3">
+                                        {letter.case ?? '—'}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {letter.created_at ?? '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={NotificationLetterController.show({
-                                                notification_letter: letter.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={NotificationLetterController.show(
+                                                    {
+                                                        notification_letter:
+                                                            letter.id,
+                                                    },
+                                                )}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Form
+                                                {...NotificationLetterController.duplicate.form(
+                                                    {
+                                                        notification_letter:
+                                                            letter.id,
+                                                    },
+                                                )}
+                                            >
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8 text-primary hover:bg-primary/10"
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                    <span className="sr-only">
+                                                        Duplicate
+                                                    </span>
+                                                </Button>
+                                            </Form>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={NotificationLetterController.destroy(
+                                                    {
+                                                        notification_letter:
+                                                            letter.id,
+                                                    },
+                                                )}
+                                                title="Delete Letter"
+                                                description={`Are you sure you want to delete ${letter.title}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

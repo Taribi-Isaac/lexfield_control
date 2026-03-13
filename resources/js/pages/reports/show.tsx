@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import type { BreadcrumbItem } from '@/types';
 
 type Report = {
@@ -36,18 +37,33 @@ export default function ReportShow({ report }: { report: Report }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{report.title}</h1>
-                        <p className="text-sm text-slate-500">{report.status}</p>
+                        <h1 className="text-xl font-semibold">
+                            {report.title}
+                        </h1>
+                        <p className="text-sm text-slate-500">
+                            {report.status}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button asChild variant="outline">
                             <Link href={ReportController.index()}>Back</Link>
                         </Button>
                         <Button asChild>
-                            <Link href={ReportController.edit({ report: report.id })}>
+                            <Link
+                                href={ReportController.edit({
+                                    report: report.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={ReportController.destroy({
+                                report: report.id,
+                            })}
+                            title="Delete Report"
+                            description={`Are you sure you want to delete ${report.title}?`}
+                        />
                     </div>
                 </div>
 
@@ -79,11 +95,15 @@ export default function ReportShow({ report }: { report: Report }) {
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Attachments</h2>
                         {report.attachments.length === 0 ? (
-                            <p className="text-sm text-slate-500">No attachments.</p>
+                            <p className="text-sm text-slate-500">
+                                No attachments.
+                            </p>
                         ) : (
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {report.attachments.map((attachment) => (
-                                    <li key={attachment.id}>{attachment.title}</li>
+                                    <li key={attachment.id}>
+                                        {attachment.title}
+                                    </li>
                                 ))}
                             </ul>
                         )}
@@ -92,7 +112,7 @@ export default function ReportShow({ report }: { report: Report }) {
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Content</h2>
-                    <div className="text-sm text-slate-600 whitespace-pre-wrap">
+                    <div className="text-sm whitespace-pre-wrap text-slate-600">
                         {report.content ?? '—'}
                     </div>
                 </div>

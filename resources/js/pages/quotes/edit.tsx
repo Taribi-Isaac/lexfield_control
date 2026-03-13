@@ -1,11 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import type { BreadcrumbItem } from '@/types';
 
 type Client = { id: number; name: string };
@@ -50,7 +50,7 @@ export default function QuoteEdit({
     cases: CaseFile[];
 }) {
     const update = QuoteController.update({ quote: quote.id });
-    const [items, setItems] = useState(
+    const [items, setItems] = useState(() =>
         quote.items.length > 0
             ? quote.items.map((item) => ({ ...item, key: item.id }))
             : [{ key: Date.now() }],
@@ -67,7 +67,11 @@ export default function QuoteEdit({
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-4 md:grid-cols-2">
@@ -82,7 +86,10 @@ export default function QuoteEdit({
                                     >
                                         <option value="">Select client</option>
                                         {clients.map((client) => (
-                                            <option key={client.id} value={client.id}>
+                                            <option
+                                                key={client.id}
+                                                value={client.id}
+                                            >
                                                 {client.name}
                                             </option>
                                         ))}
@@ -100,7 +107,9 @@ export default function QuoteEdit({
                                     <InputError message={errors.title} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="case_file_id">Case (optional)</Label>
+                                    <Label htmlFor="case_file_id">
+                                        Case (optional)
+                                    </Label>
                                     <select
                                         id="case_file_id"
                                         name="case_file_id"
@@ -109,7 +118,10 @@ export default function QuoteEdit({
                                     >
                                         <option value="">No case linked</option>
                                         {cases.map((caseFile) => (
-                                            <option key={caseFile.id} value={caseFile.id}>
+                                            <option
+                                                key={caseFile.id}
+                                                value={caseFile.id}
+                                            >
                                                 {caseFile.title}
                                             </option>
                                         ))}
@@ -129,13 +141,19 @@ export default function QuoteEdit({
                                     >
                                         <option value="Draft">Draft</option>
                                         <option value="Sent">Sent</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Rejected">Rejected</option>
+                                        <option value="Approved">
+                                            Approved
+                                        </option>
+                                        <option value="Rejected">
+                                            Rejected
+                                        </option>
                                     </select>
                                     <InputError message={errors.status} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="issued_at">Issued date</Label>
+                                    <Label htmlFor="issued_at">
+                                        Issued date
+                                    </Label>
                                     <Input
                                         id="issued_at"
                                         name="issued_at"
@@ -145,7 +163,9 @@ export default function QuoteEdit({
                                     <InputError message={errors.issued_at} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="valid_until">Valid until</Label>
+                                    <Label htmlFor="valid_until">
+                                        Valid until
+                                    </Label>
                                     <Input
                                         id="valid_until"
                                         name="valid_until"
@@ -186,11 +206,15 @@ export default function QuoteEdit({
                                                 <Input
                                                     id={`items[${index}][description]`}
                                                     name={`items[${index}][description]`}
-                                                    defaultValue={item.description ?? ''}
+                                                    defaultValue={
+                                                        item.description ?? ''
+                                                    }
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.description`]
+                                                        errors[
+                                                            `items.${index}.description`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -206,11 +230,15 @@ export default function QuoteEdit({
                                                     type="number"
                                                     step="0.01"
                                                     min="0.01"
-                                                    defaultValue={item.quantity ?? '1'}
+                                                    defaultValue={
+                                                        item.quantity ?? '1'
+                                                    }
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.quantity`]
+                                                        errors[
+                                                            `items.${index}.quantity`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -226,11 +254,15 @@ export default function QuoteEdit({
                                                     type="number"
                                                     step="0.01"
                                                     min="0"
-                                                    defaultValue={item.unit_price ?? ''}
+                                                    defaultValue={
+                                                        item.unit_price ?? ''
+                                                    }
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.unit_price`]
+                                                        errors[
+                                                            `items.${index}.unit_price`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -263,7 +295,10 @@ export default function QuoteEdit({
                                     onClick={() =>
                                         setItems((current) => [
                                             ...current,
-                                            { key: Date.now() + current.length },
+                                            {
+                                                key:
+                                                    Date.now() + current.length,
+                                            },
                                         ])
                                     }
                                 >
@@ -283,7 +318,9 @@ export default function QuoteEdit({
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Save changes</Button>
+                                <Button disabled={processing}>
+                                    Save changes
+                                </Button>
                             </div>
                         </>
                     )}

@@ -1,8 +1,8 @@
 import { Form, Head } from '@inertiajs/react';
+import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
 import type { BreadcrumbItem } from '@/types';
 
 type ActivityLog = {
@@ -91,14 +91,22 @@ export default function ActivityIndex({
                         <tbody>
                             {logs.data.map((log) => (
                                 <tr key={log.id} className="border-t">
-                                    <td className="px-4 py-3">{log.user ?? '—'}</td>
+                                    <td className="px-4 py-3">
+                                        {log.user ?? '—'}
+                                    </td>
                                     <td className="px-4 py-3">{log.action}</td>
-                                    <td className="px-4 py-3">{log.route ?? '—'}</td>
-                                    <td className="px-4 py-3">{log.method ?? '—'}</td>
+                                    <td className="px-4 py-3">
+                                        {log.route ?? '—'}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        {log.method ?? '—'}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {log.description ?? '—'}
                                     </td>
-                                    <td className="px-4 py-3">{log.created_at ?? '—'}</td>
+                                    <td className="px-4 py-3">
+                                        {log.created_at ?? '—'}
+                                    </td>
                                 </tr>
                             ))}
                             {logs.data.length === 0 && (
@@ -114,7 +122,6 @@ export default function ActivityIndex({
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </AppLayout>
     );

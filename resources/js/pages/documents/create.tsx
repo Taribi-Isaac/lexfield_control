@@ -1,11 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Option = {
@@ -112,7 +112,9 @@ export default function DocumentCreate({
                                             </option>
                                         ))}
                                     </select>
-                                    <InputError message={errors.documentable_type} />
+                                    <InputError
+                                        message={errors.documentable_type}
+                                    />
                                 </div>
                                 {documentableType !== 'general' && (
                                     <div className="grid gap-2">

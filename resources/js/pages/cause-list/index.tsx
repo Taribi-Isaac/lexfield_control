@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type CauseListEntry = {
     id: number;
@@ -90,9 +91,7 @@ export default function CauseListIndex({
                             {entries.data.map((entry) => (
                                 <tr key={entry.id} className="border-t">
                                     <td className="px-4 py-3">{entry.date}</td>
-                                    <td className="px-4 py-3">
-                                        {entry.court}
-                                    </td>
+                                    <td className="px-4 py-3">{entry.court}</td>
                                     <td className="px-4 py-3 font-medium">
                                         {entry.case_title}
                                     </td>
@@ -106,23 +105,40 @@ export default function CauseListIndex({
                                         {entry.status}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-blue-700 hover:underline"
-                                            href={CauseListController.show({
-                                                cause_list: entry.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-blue-700 hover:underline"
-                                            href={CauseListController.edit({
-                                                cause_list: entry.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-blue-700 hover:underline"
+                                                href={CauseListController.show({
+                                                    cause_list: entry.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-blue-700 hover:underline"
+                                                href={CauseListController.edit({
+                                                    cause_list: entry.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={CauseListController.destroy(
+                                                    {
+                                                        cause_list: entry.id,
+                                                    },
+                                                )}
+                                                title="Delete Cause List Entry"
+                                                description={`Are you sure you want to delete the entry for ${entry.case_title}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

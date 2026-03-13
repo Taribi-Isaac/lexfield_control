@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Invoice = {
@@ -44,7 +44,11 @@ export default function PaymentCreate({
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-4 md:grid-cols-2">
@@ -59,8 +63,12 @@ export default function PaymentCreate({
                                     >
                                         <option value="">Select invoice</option>
                                         {invoices.map((invoice) => (
-                                            <option key={invoice.id} value={invoice.id}>
-                                                {invoice.invoice_number} (₦{invoice.total})
+                                            <option
+                                                key={invoice.id}
+                                                value={invoice.id}
+                                            >
+                                                {invoice.invoice_number} (₦
+                                                {invoice.total})
                                             </option>
                                         ))}
                                     </select>
@@ -82,8 +90,14 @@ export default function PaymentCreate({
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="method">Payment method</Label>
-                                    <Input id="method" name="method" placeholder="Bank Transfer" />
+                                    <Label htmlFor="method">
+                                        Payment method
+                                    </Label>
+                                    <Input
+                                        id="method"
+                                        name="method"
+                                        placeholder="Bank Transfer"
+                                    />
                                     <InputError message={errors.method} />
                                 </div>
                                 <div className="grid gap-2">
@@ -96,7 +110,11 @@ export default function PaymentCreate({
                             <div className="grid gap-2 md:grid-cols-2">
                                 <div className="grid gap-2">
                                     <Label htmlFor="paid_at">Paid at</Label>
-                                    <Input id="paid_at" name="paid_at" type="date" />
+                                    <Input
+                                        id="paid_at"
+                                        name="paid_at"
+                                        type="date"
+                                    />
                                     <InputError message={errors.paid_at} />
                                 </div>
                                 <div className="grid gap-2">
@@ -107,7 +125,9 @@ export default function PaymentCreate({
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Save payment</Button>
+                                <Button disabled={processing}>
+                                    Save payment
+                                </Button>
                             </div>
                         </>
                     )}

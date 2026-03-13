@@ -1,7 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
+import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import type { BreadcrumbItem } from '@/types';
 
 type Letter = {
@@ -33,14 +34,19 @@ export default function NotificationLetterShow({ letter }: { letter: Letter }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{letter.title}</h1>
+                        <h1 className="text-xl font-semibold">
+                            {letter.title}
+                        </h1>
                         <p className="text-sm text-slate-500">
-                            {letter.client ?? 'No client'} · {letter.created_at ?? '—'}
+                            {letter.client ?? 'No client'} ·{' '}
+                            {letter.created_at ?? '—'}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button asChild variant="outline">
-                            <Link href={NotificationLetterController.index()}>Back</Link>
+                            <Link href={NotificationLetterController.index()}>
+                                Back
+                            </Link>
                         </Button>
                         <Button asChild variant="outline">
                             <Link
@@ -53,15 +59,33 @@ export default function NotificationLetterShow({ letter }: { letter: Letter }) {
                         </Button>
                         <Button asChild>
                             <a
-                                href={NotificationLetterController.download({
-                                    notification_letter: letter.id,
-                                }).url}
+                                href={
+                                    NotificationLetterController.download({
+                                        notification_letter: letter.id,
+                                    }).url
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
                                 Download
                             </a>
                         </Button>
+                        <Form
+                            {...NotificationLetterController.duplicate.form({
+                                notification_letter: letter.id,
+                            })}
+                        >
+                            <Button variant="secondary" type="submit">
+                                Duplicate
+                            </Button>
+                        </Form>
+                        <DeleteAction
+                            action={NotificationLetterController.destroy({
+                                notification_letter: letter.id,
+                            })}
+                            title="Delete Letter"
+                            description={`Are you sure you want to delete ${letter.title}?`}
+                        />
                     </div>
                 </div>
 

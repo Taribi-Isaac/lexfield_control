@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Document = {
@@ -34,7 +35,9 @@ export default function DocumentShow({ document }: { document: Document }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{document.title}</h1>
+                        <h1 className="text-xl font-semibold">
+                            {document.title}
+                        </h1>
                         <p className="text-sm text-slate-500">
                             {document.category ?? 'General'}
                         </p>
@@ -52,6 +55,13 @@ export default function DocumentShow({ document }: { document: Document }) {
                                 Download
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={DocumentController.destroy({
+                                document: document.id,
+                            })}
+                            title="Delete Document"
+                            description={`Are you sure you want to delete ${document.title}?`}
+                        />
                     </div>
                 </div>
 

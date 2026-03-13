@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import type { BreadcrumbItem } from '@/types';
 
 type Option = {
@@ -59,7 +59,11 @@ export default function ReportEdit({
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -182,11 +186,17 @@ export default function ReportEdit({
                     )}
                 </Form>
 
-                <Form action={review.url} method={review.method} className="grid gap-4">
+                <Form
+                    action={review.url}
+                    method={review.method}
+                    className="grid gap-4"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="review_status">Review status</Label>
+                                <Label htmlFor="review_status">
+                                    Review status
+                                </Label>
                                 <select
                                     id="review_status"
                                     name="status"

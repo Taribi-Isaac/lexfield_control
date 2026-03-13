@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
+import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import type { BreadcrumbItem } from '@/types';
 
 type CaseFile = {
@@ -38,18 +39,33 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{caseFile.title}</h1>
-                        <p className="text-sm text-slate-500">{caseFile.status}</p>
+                        <h1 className="text-xl font-semibold">
+                            {caseFile.title}
+                        </h1>
+                        <p className="text-sm text-slate-500">
+                            {caseFile.status}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button asChild variant="outline">
                             <Link href={CaseFileController.index()}>Back</Link>
                         </Button>
                         <Button asChild>
-                            <Link href={CaseFileController.edit({ case: caseFile.id })}>
+                            <Link
+                                href={CaseFileController.edit({
+                                    case: caseFile.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={CaseFileController.destroy({
+                                case: caseFile.id,
+                            })}
+                            title="Delete Case"
+                            description={`Are you sure you want to delete ${caseFile.title}?`}
+                        />
                     </div>
                 </div>
 
@@ -90,12 +106,15 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Assigned Staff</h2>
                         {caseFile.assignees.length === 0 ? (
-                            <p className="text-sm text-slate-500">No assignees.</p>
+                            <p className="text-sm text-slate-500">
+                                No assignees.
+                            </p>
                         ) : (
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {caseFile.assignees.map((assignee) => (
                                     <li key={`${assignee.id}-${assignee.role}`}>
-                                        {assignee.name ?? 'Unknown'} · {assignee.role}
+                                        {assignee.name ?? 'Unknown'} ·{' '}
+                                        {assignee.role}
                                     </li>
                                 ))}
                             </ul>
@@ -104,7 +123,9 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Documents</h2>
                         {caseFile.documents.length === 0 ? (
-                            <p className="text-sm text-slate-500">No documents linked.</p>
+                            <p className="text-sm text-slate-500">
+                                No documents linked.
+                            </p>
                         ) : (
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {caseFile.documents.map((document) => (

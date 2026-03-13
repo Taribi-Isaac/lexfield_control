@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import type { BreadcrumbItem } from '@/types';
 
 type Option = {
@@ -44,7 +44,11 @@ export default function CaseCreate({
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -56,7 +60,10 @@ export default function CaseCreate({
                                 >
                                     <option value="">Select client</option>
                                     {clients.map((client) => (
-                                        <option key={client.id} value={client.id}>
+                                        <option
+                                            key={client.id}
+                                            value={client.id}
+                                        >
                                             {client.name}
                                         </option>
                                     ))}
@@ -75,7 +82,10 @@ export default function CaseCreate({
                                     <Label htmlFor="suit_number">
                                         Suit number
                                     </Label>
-                                    <Input id="suit_number" name="suit_number" />
+                                    <Input
+                                        id="suit_number"
+                                        name="suit_number"
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="court">Court</Label>
@@ -95,7 +105,10 @@ export default function CaseCreate({
                                     >
                                         <option value="">Select lawyer</option>
                                         {lawyers.map((lawyer) => (
-                                            <option key={lawyer.id} value={lawyer.id}>
+                                            <option
+                                                key={lawyer.id}
+                                                value={lawyer.id}
+                                            >
                                                 {lawyer.name}
                                             </option>
                                         ))}

@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type ReportItem = {
     id: number;
@@ -59,7 +60,9 @@ export default function ReportsIndex({
                             <Button type="submit">Search</Button>
                         </Form>
                         <Button asChild>
-                            <Link href={ReportController.create()}>New Report</Link>
+                            <Link href={ReportController.create()}>
+                                New Report
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -101,23 +104,40 @@ export default function ReportsIndex({
                                         {report.submitted_at ?? '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-blue-700 hover:underline"
-                                            href={ReportController.show({
-                                                report: report.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-blue-700 hover:underline"
-                                            href={ReportController.edit({
-                                                report: report.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-blue-700 hover:underline"
+                                                href={ReportController.show({
+                                                    report: report.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-blue-700 hover:underline"
+                                                href={ReportController.edit({
+                                                    report: report.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={ReportController.destroy(
+                                                    {
+                                                        report: report.id,
+                                                    },
+                                                )}
+                                                title="Delete Report"
+                                                description={`Are you sure you want to delete ${report.title}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

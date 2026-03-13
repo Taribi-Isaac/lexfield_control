@@ -57,6 +57,35 @@ class NotificationLetterTest extends TestCase
             ->has('letters.data', 2));
     }
 
+    public function test_staff_can_duplicate_notification_letter(): void
+    {
+        $user = $this->createUserWithPermissions(['notification-letters.create', 'notification-letters.edit']);
+        $letter = NotificationLetter::factory()->create([
+            'title' => 'Original Title',
+            'generated_by_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->post(route('notification-letters.duplicate', $letter));
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('generated_letters', [
+            'title' => 'Original Title (Copy)',
+        ]);
+    }
+
+    public function test_staff_can_delete_notification_letter(): void
+    {
+        $user = $this->createUserWithPermissions(['notification-letters.delete']);
+        $letter = NotificationLetter::factory()->create([
+            'generated_by_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->delete(route('notification-letters.destroy', $letter));
+
+        $response->assertRedirect(route('notification-letters.index'));
+        $this->assertDatabaseMissing('generated_letters', ['id' => $letter->id]);
+    }
+
     private function createUserWithPermissions(array $permissionSlugs): User
     {
         $role = Role::factory()->create(['slug' => 'notification-letters-role']);

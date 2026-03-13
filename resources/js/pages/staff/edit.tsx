@@ -1,10 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import StaffController from '@/actions/App/Http/Controllers/StaffController';
+import DeleteAction from '@/components/delete-action';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import type { BreadcrumbItem } from '@/types';
 
 type Role = {
@@ -56,12 +57,25 @@ export default function StaffEdit({
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-semibold">Edit Staff</h1>
-                    <Button asChild variant="outline">
-                        <Link href={StaffController.index()}>Back</Link>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button asChild variant="outline">
+                            <Link href={StaffController.index()}>Back</Link>
+                        </Button>
+                        <DeleteAction
+                            action={StaffController.destroy({
+                                staff: staff.id,
+                            })}
+                            title="Delete Staff"
+                            description={`Are you sure you want to delete ${staff.name}? This will remove their profile and access.`}
+                        />
+                    </div>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -121,7 +135,8 @@ export default function StaffEdit({
                                 </div>
                                 <InputError message={errors.roles} />
                                 <p className="text-xs text-slate-500">
-                                    Manage role permissions under Roles &amp; Permissions.
+                                    Manage role permissions under Roles &amp;
+                                    Permissions.
                                 </p>
                             </div>
 
@@ -137,7 +152,9 @@ export default function StaffEdit({
                                     />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="department">Department</Label>
+                                    <Label htmlFor="department">
+                                        Department
+                                    </Label>
                                     <Input
                                         id="department"
                                         name="department"
@@ -157,8 +174,7 @@ export default function StaffEdit({
                                         id="employment_type"
                                         name="employment_type"
                                         defaultValue={
-                                            staff.profile?.employment_type ??
-                                            ''
+                                            staff.profile?.employment_type ?? ''
                                         }
                                     />
                                 </div>

@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
+import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import type { BreadcrumbItem } from '@/types';
 
 type CauseListEntry = {
@@ -35,7 +36,9 @@ export default function CauseListShow({ entry }: { entry: CauseListEntry }) {
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">{entry.case_title}</h1>
+                        <h1 className="text-xl font-semibold">
+                            {entry.case_title}
+                        </h1>
                         <p className="text-sm text-slate-500">{entry.status}</p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -43,21 +46,36 @@ export default function CauseListShow({ entry }: { entry: CauseListEntry }) {
                             <Link href={CauseListController.index()}>Back</Link>
                         </Button>
                         <Button asChild>
-                            <Link href={CauseListController.edit({ cause_list: entry.id })}>
+                            <Link
+                                href={CauseListController.edit({
+                                    cause_list: entry.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={CauseListController.destroy({
+                                cause_list: entry.id,
+                            })}
+                            title="Delete Cause List Entry"
+                            description={`Are you sure you want to delete the entry for ${entry.case_title}?`}
+                        />
                     </div>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Schedule</h2>
-                        <p className="text-sm text-slate-600">Date: {entry.date}</p>
+                        <p className="text-sm text-slate-600">
+                            Date: {entry.date}
+                        </p>
                         <p className="text-sm text-slate-600">
                             Time: {entry.time ?? '—'}
                         </p>
-                        <p className="text-sm text-slate-600">Court: {entry.court}</p>
+                        <p className="text-sm text-slate-600">
+                            Court: {entry.court}
+                        </p>
                     </div>
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Case Details</h2>
@@ -75,7 +93,9 @@ export default function CauseListShow({ entry }: { entry: CauseListEntry }) {
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Notes</h2>
-                    <p className="text-sm text-slate-600">{entry.notes ?? '—'}</p>
+                    <p className="text-sm text-slate-600">
+                        {entry.notes ?? '—'}
+                    </p>
                 </div>
             </div>
         </AppLayout>

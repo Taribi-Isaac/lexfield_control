@@ -1,10 +1,8 @@
 import { Link } from '@inertiajs/react';
 import {
-    BookOpen,
     Briefcase,
     CalendarDays,
     FileText,
-    FolderGit2,
     LayoutGrid,
     FileBarChart2,
     CreditCard,
@@ -15,6 +13,19 @@ import {
     Receipt,
     Users,
 } from 'lucide-react';
+import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
+import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
+import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
+import ClientController from '@/actions/App/Http/Controllers/ClientController';
+import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
+import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
+import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
+import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
+import RoleController from '@/actions/App/Http/Controllers/RoleController';
+import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -29,19 +40,6 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
-import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
-import ClientController from '@/actions/App/Http/Controllers/ClientController';
-import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
-import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
-import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
-import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
-import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
-import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
-import ReportController from '@/actions/App/Http/Controllers/ReportController';
-import RoleController from '@/actions/App/Http/Controllers/RoleController';
-import StaffController from '@/actions/App/Http/Controllers/StaffController';
-import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -118,7 +116,7 @@ const mainNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
-  /*   {
+    /*   {
         title: 'Lexfield Attorneys',
         href: dashboard(),
         icon: FolderGit2,

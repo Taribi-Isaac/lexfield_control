@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type DocumentItem = {
     id: number;
@@ -87,23 +88,42 @@ export default function DocumentsIndex({
                                         {document.uploader || '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={DocumentController.show({
-                                                document: document.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={DocumentController.download({
-                                                document: document.id,
-                                            })}
-                                        >
-                                            Download
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={DocumentController.show({
+                                                    document: document.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={DocumentController.download(
+                                                    {
+                                                        document: document.id,
+                                                    },
+                                                )}
+                                            >
+                                                Download
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={DocumentController.destroy(
+                                                    {
+                                                        document: document.id,
+                                                    },
+                                                )}
+                                                title="Delete Document"
+                                                description={`Are you sure you want to delete ${document.title}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

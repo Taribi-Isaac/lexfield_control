@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type ClientItem = {
     id: number;
@@ -57,7 +58,9 @@ export default function ClientsIndex({
                             <Button type="submit">Search</Button>
                         </Form>
                         <Button asChild>
-                            <Link href={ClientController.create()}>New Client</Link>
+                            <Link href={ClientController.create()}>
+                                New Client
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -89,23 +92,40 @@ export default function ClientsIndex({
                                         {client.phone || '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={ClientController.show({
-                                                client: client.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={ClientController.edit({
-                                                client: client.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={ClientController.show({
+                                                    client: client.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={ClientController.edit({
+                                                    client: client.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={ClientController.destroy(
+                                                    {
+                                                        client: client.id,
+                                                    },
+                                                )}
+                                                title="Delete Client"
+                                                description={`Are you sure you want to delete ${client.name}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

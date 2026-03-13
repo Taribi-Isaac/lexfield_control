@@ -147,4 +147,27 @@ class NotificationLetterController extends Controller
 
         return $pdf->download('notification-letter-'.$notificationLetter->id.'.pdf');
     }
+
+    public function duplicate(NotificationLetter $notificationLetter): RedirectResponse
+    {
+        Gate::authorize('permission', 'notification-letters.create');
+
+        $duplicate = $notificationLetter->replicate();
+        $duplicate->title = $duplicate->title . ' (Copy)';
+        $duplicate->generated_by_id = auth()->id();
+        $duplicate->save();
+
+        return redirect()->route('notification-letters.edit', $duplicate)
+            ->with('success', 'Letter duplicated.');
+    }
+
+    public function destroy(NotificationLetter $notificationLetter): RedirectResponse
+    {
+        Gate::authorize('permission', 'notification-letters.delete');
+
+        $notificationLetter->delete();
+
+        return redirect()->route('notification-letters.index')
+            ->with('success', 'Letter removed.');
+    }
 }

@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type PaymentItem = {
     id: number;
@@ -59,7 +60,9 @@ export default function PaymentsIndex({
                             <Button type="submit">Search</Button>
                         </Form>
                         <Button asChild>
-                            <Link href={PaymentController.create()}>Record Payment</Link>
+                            <Link href={PaymentController.create()}>
+                                Record Payment
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -89,7 +92,9 @@ export default function PaymentsIndex({
                                     <td className="px-4 py-3">
                                         {payment.client ?? '—'}
                                     </td>
-                                    <td className="px-4 py-3">{payment.amount}</td>
+                                    <td className="px-4 py-3">
+                                        {payment.amount}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {payment.method ?? '—'}
                                     </td>
@@ -97,23 +102,40 @@ export default function PaymentsIndex({
                                         {payment.paid_at ?? '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={PaymentController.show({
-                                                payment: payment.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={PaymentController.edit({
-                                                payment: payment.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={PaymentController.show({
+                                                    payment: payment.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={PaymentController.edit({
+                                                    payment: payment.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={PaymentController.destroy(
+                                                    {
+                                                        payment: payment.id,
+                                                    },
+                                                )}
+                                                title="Delete Payment"
+                                                description={`Are you sure you want to delete payment ${payment.receipt_number}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

@@ -7,8 +7,8 @@ import causeList from '@/routes/cause-list';
 import clients from '@/routes/clients';
 import documents from '@/routes/documents';
 import invoices from '@/routes/invoices';
-import reports from '@/routes/reports';
 import quotes from '@/routes/quotes';
+import reports from '@/routes/reports';
 import staff from '@/routes/staff';
 import type { BreadcrumbItem } from '@/types';
 
@@ -201,8 +201,7 @@ export default function Dashboard({
                                             <p className="text-xs text-slate-500">
                                                 {document.category ?? 'General'}
                                                 {' · '}
-                                                {document.uploader ??
-                                                    'Unknown'}
+                                                {document.uploader ?? 'Unknown'}
                                             </p>
                                         </div>
                                         <span className="text-xs text-slate-400">
@@ -237,15 +236,33 @@ export default function Dashboard({
                                     const entryDate = new Date(entry.date);
                                     const today = new Date();
                                     today.setHours(0, 0, 0, 0);
-                                    const isToday = entryDate.toDateString() === today.toDateString();
-                                    const isTomorrow = entryDate.toDateString() === new Date(today.getTime() + 24 * 60 * 60 * 1000).toDateString();
-                                    
-                                    const dateLabel = isToday 
-                                        ? 'Today' 
-                                        : isTomorrow 
-                                        ? 'Tomorrow' 
-                                        : entryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: entryDate.getFullYear() !== today.getFullYear() ? 'numeric' : undefined });
-                                    
+                                    const isToday =
+                                        entryDate.toDateString() ===
+                                        today.toDateString();
+                                    const isTomorrow =
+                                        entryDate.toDateString() ===
+                                        new Date(
+                                            today.getTime() +
+                                                24 * 60 * 60 * 1000,
+                                        ).toDateString();
+
+                                    const dateLabel = isToday
+                                        ? 'Today'
+                                        : isTomorrow
+                                          ? 'Tomorrow'
+                                          : entryDate.toLocaleDateString(
+                                                'en-US',
+                                                {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year:
+                                                        entryDate.getFullYear() !==
+                                                        today.getFullYear()
+                                                            ? 'numeric'
+                                                            : undefined,
+                                                },
+                                            );
+
                                     return (
                                         <div
                                             key={entry.id}
@@ -255,18 +272,22 @@ export default function Dashboard({
                                                 <p className="font-medium text-slate-900">
                                                     {entry.case_title}
                                                 </p>
-                                                <p className="text-xs text-slate-500 mt-1">
-                                                    <span className="font-semibold text-slate-700">{dateLabel}</span>
-                                                    {entry.time && ` · ${entry.time}`}
+                                                <p className="mt-1 text-xs text-slate-500">
+                                                    <span className="font-semibold text-slate-700">
+                                                        {dateLabel}
+                                                    </span>
+                                                    {entry.time &&
+                                                        ` · ${entry.time}`}
                                                 </p>
                                                 <p className="text-xs text-slate-500">
                                                     {entry.court}
                                                 </p>
                                                 <p className="text-xs text-slate-500">
-                                                    {entry.assigned_lawyer ?? 'Unassigned'}
+                                                    {entry.assigned_lawyer ??
+                                                        'Unassigned'}
                                                 </p>
                                             </div>
-                                            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ml-2">
+                                            <span className="ml-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                                                 {entry.status}
                                             </span>
                                         </div>

@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import type { BreadcrumbItem } from '@/types';
 
 type Role = {
@@ -37,7 +37,11 @@ export default function StaffCreate({ roles }: { roles: Role[] }) {
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -87,7 +91,8 @@ export default function StaffCreate({ roles }: { roles: Role[] }) {
                                 </div>
                                 <InputError message={errors.roles} />
                                 <p className="text-xs text-slate-500">
-                                    Manage role permissions under Roles &amp; Permissions.
+                                    Manage role permissions under Roles &amp;
+                                    Permissions.
                                 </p>
                             </div>
 
@@ -97,7 +102,9 @@ export default function StaffCreate({ roles }: { roles: Role[] }) {
                                     <Input id="position" name="position" />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="department">Department</Label>
+                                    <Label htmlFor="department">
+                                        Department
+                                    </Label>
                                     <Input id="department" name="department" />
                                 </div>
                             </div>

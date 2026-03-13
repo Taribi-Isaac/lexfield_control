@@ -1,8 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import AppLayout from '@/layouts/app-layout';
 import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
+import DeleteAction from '@/components/delete-action';
+import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 
 type Invoice = {
@@ -69,18 +70,22 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                         </Button>
                         <Button asChild variant="outline">
                             <Link
-                                href={PaymentController.create({
-                                    query: { invoice_id: invoice.id },
-                                }).url}
+                                href={
+                                    PaymentController.create({
+                                        query: { invoice_id: invoice.id },
+                                    }).url
+                                }
                             >
                                 Record payment
                             </Link>
                         </Button>
                         <Button asChild variant="outline">
                             <a
-                                href={InvoiceController.download({
-                                    invoice: invoice.id,
-                                }).url}
+                                href={
+                                    InvoiceController.download({
+                                        invoice: invoice.id,
+                                    }).url
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -90,9 +95,11 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                         {invoice.status === 'Paid' && (
                             <Button asChild variant="outline">
                                 <a
-                                    href={InvoiceController.receipt({
-                                        invoice: invoice.id,
-                                    }).url}
+                                    href={
+                                        InvoiceController.receipt({
+                                            invoice: invoice.id,
+                                        }).url
+                                    }
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -101,10 +108,21 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                             </Button>
                         )}
                         <Button asChild>
-                            <Link href={InvoiceController.edit({ invoice: invoice.id })}>
+                            <Link
+                                href={InvoiceController.edit({
+                                    invoice: invoice.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
+                        <DeleteAction
+                            action={InvoiceController.destroy({
+                                invoice: invoice.id,
+                            })}
+                            title="Delete Invoice"
+                            description={`Are you sure you want to delete invoice ${invoice.invoice_number}?`}
+                        />
                     </div>
                 </div>
 
@@ -153,9 +171,15 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                                         <td className="px-4 py-3">
                                             {item.description}
                                         </td>
-                                        <td className="px-4 py-3">{item.quantity}</td>
-                                        <td className="px-4 py-3">{item.unit_price}</td>
-                                        <td className="px-4 py-3">{item.line_total}</td>
+                                        <td className="px-4 py-3">
+                                            {item.quantity}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {item.unit_price}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {item.line_total}
+                                        </td>
                                     </tr>
                                 ))}
                                 {invoice.items.length === 0 && (
@@ -197,12 +221,17 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                                         <th className="px-4 py-3">Amount</th>
                                         <th className="px-4 py-3">Method</th>
                                         <th className="px-4 py-3">Paid at</th>
-                                        <th className="px-4 py-3">Received by</th>
+                                        <th className="px-4 py-3">
+                                            Received by
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {invoice.payments.map((payment) => (
-                                        <tr key={payment.id} className="border-t">
+                                        <tr
+                                            key={payment.id}
+                                            className="border-t"
+                                        >
                                             <td className="px-4 py-3 font-medium">
                                                 {payment.receipt_number}
                                             </td>
@@ -228,7 +257,9 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
 
                 <div className="rounded-lg border p-4">
                     <h2 className="mb-2 font-semibold">Notes</h2>
-                    <p className="text-sm text-slate-600">{invoice.notes ?? '—'}</p>
+                    <p className="text-sm text-slate-600">
+                        {invoice.notes ?? '—'}
+                    </p>
                 </div>
             </div>
         </AppLayout>

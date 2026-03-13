@@ -1,11 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import type { BreadcrumbItem } from '@/types';
 
 type Client = { id: number; name: string };
@@ -30,7 +30,7 @@ export default function InvoiceCreate({
     cases: CaseFile[];
 }) {
     const store = InvoiceController.store();
-    const [items, setItems] = useState([{ key: Date.now() }]);
+    const [items, setItems] = useState(() => [{ key: Date.now() }]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -43,7 +43,11 @@ export default function InvoiceCreate({
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-4 md:grid-cols-2">
@@ -57,7 +61,10 @@ export default function InvoiceCreate({
                                     >
                                         <option value="">Select client</option>
                                         {clients.map((client) => (
-                                            <option key={client.id} value={client.id}>
+                                            <option
+                                                key={client.id}
+                                                value={client.id}
+                                            >
                                                 {client.name}
                                             </option>
                                         ))}
@@ -70,7 +77,9 @@ export default function InvoiceCreate({
                                     <InputError message={errors.title} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="case_file_id">Case (optional)</Label>
+                                    <Label htmlFor="case_file_id">
+                                        Case (optional)
+                                    </Label>
                                     <select
                                         id="case_file_id"
                                         name="case_file_id"
@@ -78,7 +87,10 @@ export default function InvoiceCreate({
                                     >
                                         <option value="">No case linked</option>
                                         {cases.map((caseFile) => (
-                                            <option key={caseFile.id} value={caseFile.id}>
+                                            <option
+                                                key={caseFile.id}
+                                                value={caseFile.id}
+                                            >
                                                 {caseFile.title}
                                             </option>
                                         ))}
@@ -89,13 +101,23 @@ export default function InvoiceCreate({
 
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="issued_at">Issued date</Label>
-                                    <Input id="issued_at" name="issued_at" type="date" />
+                                    <Label htmlFor="issued_at">
+                                        Issued date
+                                    </Label>
+                                    <Input
+                                        id="issued_at"
+                                        name="issued_at"
+                                        type="date"
+                                    />
                                     <InputError message={errors.issued_at} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="due_date">Due date</Label>
-                                    <Input id="due_date" name="due_date" type="date" />
+                                    <Input
+                                        id="due_date"
+                                        name="due_date"
+                                        type="date"
+                                    />
                                     <InputError message={errors.due_date} />
                                 </div>
                                 <div className="grid gap-2">
@@ -133,7 +155,9 @@ export default function InvoiceCreate({
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.description`]
+                                                        errors[
+                                                            `items.${index}.description`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -153,7 +177,9 @@ export default function InvoiceCreate({
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.quantity`]
+                                                        errors[
+                                                            `items.${index}.quantity`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -172,7 +198,9 @@ export default function InvoiceCreate({
                                                 />
                                                 <InputError
                                                     message={
-                                                        errors[`items.${index}.unit_price`]
+                                                        errors[
+                                                            `items.${index}.unit_price`
+                                                        ]
                                                     }
                                                 />
                                             </div>
@@ -205,7 +233,10 @@ export default function InvoiceCreate({
                                     onClick={() =>
                                         setItems((current) => [
                                             ...current,
-                                            { key: Date.now() + current.length },
+                                            {
+                                                key:
+                                                    Date.now() + current.length,
+                                            },
                                         ])
                                     }
                                 >
@@ -224,7 +255,9 @@ export default function InvoiceCreate({
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Create invoice</Button>
+                                <Button disabled={processing}>
+                                    Create invoice
+                                </Button>
                             </div>
                         </>
                     )}

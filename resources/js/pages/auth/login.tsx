@@ -14,9 +14,7 @@ type Props = {
     status?: string;
 };
 
-export default function Login({
-    status,
-}: Props) {
+export default function Login({ status }: Props) {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -35,7 +33,10 @@ export default function Login({
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email" className="text-slate-900">
+                                <Label
+                                    htmlFor="email"
+                                    className="text-slate-900"
+                                >
                                     Email address
                                 </Label>
                                 <Input
@@ -47,26 +48,34 @@ export default function Login({
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="email@example.com"
-                                    style={{ textTransform: 'lowercase', color: 'black' }}
+                                    style={{
+                                        textTransform: 'lowercase',
+                                        color: 'black',
+                                    }}
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password" className="text-slate-900">
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-slate-900"
+                                    >
                                         Password
                                     </Label>
                                 </div>
                                 <div className="relative">
-                                <Input
-                                    id="password"
-                                        type={showPassword ? 'text' : 'password'}
-                                    name="password"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="current-password"
-                                    placeholder="Password"
+                                    <Input
+                                        id="password"
+                                        type={
+                                            showPassword ? 'text' : 'password'
+                                        }
+                                        name="password"
+                                        required
+                                        tabIndex={2}
+                                        autoComplete="current-password"
+                                        placeholder="Password"
                                         style={{ color: 'black' }}
                                         className="pr-10"
                                     />
@@ -98,7 +107,10 @@ export default function Login({
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember" className="text-slate-900">
+                                <Label
+                                    htmlFor="remember"
+                                    className="text-slate-900"
+                                >
                                     Remember me
                                 </Label>
                             </div>
@@ -114,7 +126,6 @@ export default function Login({
                                 Log in
                             </Button>
                         </div>
-
                     </>
                 )}
             </Form>
