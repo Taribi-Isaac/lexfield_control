@@ -1,9 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type QuoteItem = {
     id: number;
@@ -60,7 +61,9 @@ export default function QuotesIndex({
                             <Button type="submit">Search</Button>
                         </Form>
                         <Button asChild>
-                            <Link href={QuoteController.create()}>New Quote</Link>
+                            <Link href={QuoteController.create()}>
+                                New Quote
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -94,29 +97,48 @@ export default function QuotesIndex({
                                     <td className="px-4 py-3">
                                         {quote.case ?? '—'}
                                     </td>
-                                    <td className="px-4 py-3">{quote.status}</td>
+                                    <td className="px-4 py-3">
+                                        {quote.status}
+                                    </td>
                                     <td className="px-4 py-3">{quote.total}</td>
                                     <td className="px-4 py-3">
                                         {quote.issued_at ?? '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={QuoteController.show({
-                                                quote: quote.id,
-                                            })}
-                                        >
-                                            View
-                                        </Link>
-                                        <span className="px-2 text-slate-300">|</span>
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={QuoteController.edit({
-                                                quote: quote.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={QuoteController.show({
+                                                    quote: quote.id,
+                                                })}
+                                            >
+                                                View
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={QuoteController.edit({
+                                                    quote: quote.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={QuoteController.destroy(
+                                                    {
+                                                        quote: quote.id,
+                                                    },
+                                                )}
+                                                title="Delete Quote"
+                                                description={`Are you sure you want to delete ${quote.quote_number}?`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

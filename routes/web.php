@@ -29,14 +29,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('quotes', QuoteController::class);
     Route::resource('invoices', InvoiceController::class);
     Route::resource('payments', PaymentController::class);
-    Route::resource('messages', ConversationController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('messages', ConversationController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
     Route::post('messages/{conversation}/send', [MessageController::class, 'store'])
         ->name('messages.send');
     Route::get('conversation-attachments/{attachment}/download', [\App\Http\Controllers\ConversationAttachmentController::class, 'download'])
         ->name('conversation-attachments.download');
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
-    Route::resource('notification-letters', NotificationLetterController::class)
-        ->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+    Route::post('notification-letters/{notification_letter}/duplicate', [NotificationLetterController::class, 'duplicate'])
+        ->name('notification-letters.duplicate');
+    Route::resource('notification-letters', NotificationLetterController::class);
     Route::get(
         'notification-letters/{notification_letter}/download',
         [NotificationLetterController::class, 'download']

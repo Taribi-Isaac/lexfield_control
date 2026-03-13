@@ -17,8 +17,11 @@ export default function AuthSimpleLayout({
             <div className="relative w-full max-w-md rounded-2xl bg-white/95 p-8 shadow-xl">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4 text-center">
-                        <Link href={login()} className="flex flex-col items-center gap-3">
-                          {/*   <img
+                        <Link
+                            href={login()}
+                            className="flex flex-col items-center gap-3"
+                        >
+                            {/*   <img
                                 src="/LEXFIELD-ICON.png"
                                 alt="Lexfield icon"
                                 className="h-12 w-12"

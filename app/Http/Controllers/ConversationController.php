@@ -130,4 +130,14 @@ class ConversationController extends Controller
             'documents' => Document::query()->latest()->limit(50)->get(['id', 'title']),
         ]);
     }
+
+    public function destroy(Conversation $message): RedirectResponse
+    {
+        Gate::authorize('permission', 'messages.delete');
+
+        $message->delete();
+
+        return redirect()->route('messages.index')
+            ->with('success', 'Conversation removed.');
+    }
 }

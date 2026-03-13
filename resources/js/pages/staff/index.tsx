@@ -1,8 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
+import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import StaffController from '@/actions/App/Http/Controllers/StaffController';
 import type { BreadcrumbItem } from '@/types';
+import DeleteAction from '@/components/delete-action';
 
 type StaffItem = {
     id: number;
@@ -64,14 +65,29 @@ export default function StaffIndex({ staff }: { staff: Paginated<StaffItem> }) {
                                         {member.department || '—'}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <Link
-                                            className="text-sm text-primary underline-offset-4 hover:underline"
-                                            href={StaffController.edit({
-                                                staff: member.id,
-                                            })}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={StaffController.edit({
+                                                    staff: member.id,
+                                                })}
+                                            >
+                                                Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <DeleteAction
+                                                action={StaffController.destroy(
+                                                    {
+                                                        staff: member.id,
+                                                    },
+                                                )}
+                                                title="Delete Staff"
+                                                description={`Are you sure you want to delete ${member.name}? This will remove their profile and access.`}
+                                                variant="icon"
+                                            />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

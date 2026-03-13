@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import type { BreadcrumbItem } from '@/types';
 
 type Invoice = {
@@ -54,7 +54,11 @@ export default function PaymentEdit({
                     </Button>
                 </div>
 
-                <Form action={update.url} method={update.method} className="grid gap-6">
+                <Form
+                    action={update.url}
+                    method={update.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-4 md:grid-cols-2">
@@ -69,8 +73,12 @@ export default function PaymentEdit({
                                     >
                                         <option value="">Select invoice</option>
                                         {invoices.map((invoice) => (
-                                            <option key={invoice.id} value={invoice.id}>
-                                                {invoice.invoice_number} (₦{invoice.total})
+                                            <option
+                                                key={invoice.id}
+                                                value={invoice.id}
+                                            >
+                                                {invoice.invoice_number} (₦
+                                                {invoice.total})
                                             </option>
                                         ))}
                                     </select>
@@ -93,7 +101,9 @@ export default function PaymentEdit({
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="method">Payment method</Label>
+                                    <Label htmlFor="method">
+                                        Payment method
+                                    </Label>
                                     <Input
                                         id="method"
                                         name="method"
@@ -135,7 +145,9 @@ export default function PaymentEdit({
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Save changes</Button>
+                                <Button disabled={processing}>
+                                    Save changes
+                                </Button>
                             </div>
                         </>
                     )}

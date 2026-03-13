@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import type { BreadcrumbItem } from '@/types';
 
 type Client = { id: number; name: string };
@@ -35,13 +35,21 @@ export default function NotificationLettersCreate({
             <Head title="New Notification Letter" />
             <div className="flex flex-col gap-6 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold">New Notification Letter</h1>
+                    <h1 className="text-xl font-semibold">
+                        New Notification Letter
+                    </h1>
                     <Button asChild variant="outline">
-                        <Link href={NotificationLetterController.index()}>Back</Link>
+                        <Link href={NotificationLetterController.index()}>
+                            Back
+                        </Link>
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -52,7 +60,9 @@ export default function NotificationLettersCreate({
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="client_id">Client (optional)</Label>
+                                    <Label htmlFor="client_id">
+                                        Client (optional)
+                                    </Label>
                                     <select
                                         id="client_id"
                                         name="client_id"
@@ -60,7 +70,10 @@ export default function NotificationLettersCreate({
                                     >
                                         <option value="">Select client</option>
                                         {clients.map((client) => (
-                                            <option key={client.id} value={client.id}>
+                                            <option
+                                                key={client.id}
+                                                value={client.id}
+                                            >
                                                 {client.name}
                                             </option>
                                         ))}
@@ -68,7 +81,9 @@ export default function NotificationLettersCreate({
                                     <InputError message={errors.client_id} />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="case_file_id">Case (optional)</Label>
+                                    <Label htmlFor="case_file_id">
+                                        Case (optional)
+                                    </Label>
                                     <select
                                         id="case_file_id"
                                         name="case_file_id"
@@ -97,8 +112,9 @@ export default function NotificationLettersCreate({
                                     placeholder="Write the notification letter body..."
                                 />
                                 <p className="text-xs text-slate-500">
-                                    You may use basic HTML tags like &lt;strong&gt;,
-                                    &lt;em&gt;, &lt;ul&gt;, &lt;li&gt; for formatting.
+                                    You may use basic HTML tags like
+                                    &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;,
+                                    &lt;li&gt; for formatting.
                                 </p>
                                 <InputError message={errors.body} />
                             </div>

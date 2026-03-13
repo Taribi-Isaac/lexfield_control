@@ -1,10 +1,10 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -32,7 +32,11 @@ export default function ClientCreate() {
                     </Button>
                 </div>
 
-                <Form action={store.url} method={store.method} className="grid gap-6">
+                <Form
+                    action={store.url}
+                    method={store.method}
+                    className="grid gap-6"
+                >
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
@@ -49,7 +53,9 @@ export default function ClientCreate() {
                                     className="h-9 rounded-md border bg-transparent px-3 text-sm"
                                     defaultValue="Individual"
                                 >
-                                    <option value="Individual">Individual</option>
+                                    <option value="Individual">
+                                        Individual
+                                    </option>
                                     <option value="Corporate">Corporate</option>
                                 </select>
                                 <InputError message={errors.client_type} />
@@ -58,7 +64,11 @@ export default function ClientCreate() {
                             <div className="grid gap-2 md:grid-cols-2">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="email" type="email" />
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="phone">Phone</Label>
@@ -76,7 +86,10 @@ export default function ClientCreate() {
                                     <Label htmlFor="company_name">
                                         Company name
                                     </Label>
-                                    <Input id="company_name" name="company_name" />
+                                    <Input
+                                        id="company_name"
+                                        name="company_name"
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="company_registration_number">

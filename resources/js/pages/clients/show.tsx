@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
+import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import ClientController from '@/actions/App/Http/Controllers/ClientController';
 import type { BreadcrumbItem } from '@/types';
 
 type Client = {
@@ -48,7 +48,11 @@ export default function ClientShow({ client }: { client: Client }) {
                             <Link href={ClientController.index()}>Back</Link>
                         </Button>
                         <Button asChild>
-                            <Link href={ClientController.edit({ client: client.id })}>
+                            <Link
+                                href={ClientController.edit({
+                                    client: client.id,
+                                })}
+                            >
                                 Edit
                             </Link>
                         </Button>
@@ -69,12 +73,15 @@ export default function ClientShow({ client }: { client: Client }) {
                         </p>
                     </div>
                     <div className="rounded-lg border p-4">
-                        <h2 className="mb-2 font-semibold">Corporate Details</h2>
+                        <h2 className="mb-2 font-semibold">
+                            Corporate Details
+                        </h2>
                         <p className="text-sm text-slate-600">
                             Company: {client.company_name ?? '—'}
                         </p>
                         <p className="text-sm text-slate-600">
-                            Registration: {client.company_registration_number ?? '—'}
+                            Registration:{' '}
+                            {client.company_registration_number ?? '—'}
                         </p>
                         <p className="text-sm text-slate-600">
                             Contact person: {client.contact_person_name ?? '—'}
@@ -92,7 +99,9 @@ export default function ClientShow({ client }: { client: Client }) {
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Cases</h2>
                         {client.cases.length === 0 ? (
-                            <p className="text-sm text-slate-500">No cases linked.</p>
+                            <p className="text-sm text-slate-500">
+                                No cases linked.
+                            </p>
                         ) : (
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {client.cases.map((caseFile) => (
@@ -106,7 +115,9 @@ export default function ClientShow({ client }: { client: Client }) {
                     <div className="rounded-lg border p-4">
                         <h2 className="mb-2 font-semibold">Documents</h2>
                         {client.documents.length === 0 ? (
-                            <p className="text-sm text-slate-500">No documents linked.</p>
+                            <p className="text-sm text-slate-500">
+                                No documents linked.
+                            </p>
                         ) : (
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {client.documents.map((document) => (
