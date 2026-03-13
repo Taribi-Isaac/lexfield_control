@@ -100,6 +100,7 @@ class ConversationController extends Controller
             'participants.user',
             'messages.sender',
             'messages.attachments.document',
+            'messages.conversationAttachments',
         ]);
 
         return Inertia::render('messages/show', [
@@ -119,6 +120,10 @@ class ConversationController extends Controller
                     'attachments' => $entry->attachments->map(fn ($attachment): array => [
                         'id' => $attachment->document?->id,
                         'title' => $attachment->document?->title,
+                    ]),
+                    'conversation_attachments' => $entry->conversationAttachments->map(fn ($attachment): array => [
+                        'id' => $attachment->id,
+                        'file_name' => $attachment->file_name,
                     ]),
                 ]),
             ],

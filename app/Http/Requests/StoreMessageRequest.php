@@ -25,6 +25,8 @@ class StoreMessageRequest extends FormRequest
             'content' => ['required', 'string'],
             'attachments' => ['nullable', 'array'],
             'attachments.*' => ['exists:documents,id'],
+            'files' => ['nullable', 'array'],
+            'files.*' => ['file', 'max:10240'],
         ];
     }
 }

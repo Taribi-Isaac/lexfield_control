@@ -35,4 +35,9 @@ class Message extends Model
     {
         return $this->hasMany(MessageAttachment::class);
     }
+
+    public function conversationAttachments(): HasMany
+    {
+        return $this->hasMany(ConversationAttachment::class);
+    }
 }
