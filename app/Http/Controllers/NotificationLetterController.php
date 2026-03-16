@@ -153,7 +153,7 @@ class NotificationLetterController extends Controller
         Gate::authorize('permission', 'notification-letters.create');
 
         $duplicate = $notificationLetter->replicate();
-        $duplicate->title = $duplicate->title . ' (Copy)';
+        $duplicate->title = $duplicate->title.' (Copy)';
         $duplicate->generated_by_id = auth()->id();
         $duplicate->save();
 
