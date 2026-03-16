@@ -14,7 +14,7 @@ type Document = {
     mime_type?: string | null;
     uploader?: string | null;
     created_at?: string | null;
-    links: { type: string; id: number }[];
+    links: { type: string; id: number; name: string }[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,14 +46,25 @@ export default function DocumentShow({ document }: { document: Document }) {
                         <Button asChild variant="outline">
                             <Link href={DocumentController.index()}>Back</Link>
                         </Button>
+                        <Button asChild variant="secondary">
+                            <a
+                                href={DocumentController.view({
+                                    document: document.id,
+                                }).url}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                View
+                            </a>
+                        </Button>
                         <Button asChild>
-                            <Link
+                            <a
                                 href={DocumentController.download({
                                     document: document.id,
-                                })}
+                                }).url}
                             >
                                 Download
-                            </Link>
+                            </a>
                         </Button>
                         <DeleteAction
                             action={DocumentController.destroy({
@@ -94,7 +105,10 @@ export default function DocumentShow({ document }: { document: Document }) {
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {document.links.map((link) => (
                                     <li key={`${link.type}-${link.id}`}>
-                                        {link.type} #{link.id}
+                                        <span className="font-medium">
+                                            {link.type}:
+                                        </span>{' '}
+                                        {link.name} (#{link.id})
                                     </li>
                                 ))}
                             </ul>

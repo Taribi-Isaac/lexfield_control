@@ -95,21 +95,32 @@ export default function DocumentsIndex({
                                                     document: document.id,
                                                 })}
                                             >
-                                                View
+                                                Details
                                             </Link>
                                             <span className="text-slate-300">
                                                 |
                                             </span>
-                                            <Link
+                                            <a
                                                 className="text-sm text-primary underline-offset-4 hover:underline"
-                                                href={DocumentController.download(
-                                                    {
-                                                        document: document.id,
-                                                    },
-                                                )}
+                                                href={DocumentController.view({
+                                                    document: document.id,
+                                                }).url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                View
+                                            </a>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <a
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={DocumentController.download({
+                                                    document: document.id,
+                                                }).url}
                                             >
                                                 Download
-                                            </Link>
+                                            </a>
                                             <span className="text-slate-300">
                                                 |
                                             </span>

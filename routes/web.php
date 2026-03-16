@@ -54,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('roles', RoleController::class)->only(['index', 'edit', 'update']);
     Route::get('documents/{document}/download', [DocumentController::class, 'download'])
         ->name('documents.download');
+    Route::get('documents/{document}/view', [DocumentController::class, 'view'])
+        ->name('documents.view');
     Route::resource('documents', DocumentController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 });
 

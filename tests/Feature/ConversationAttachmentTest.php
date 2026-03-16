@@ -34,10 +34,10 @@ class ConversationAttachmentTest extends TestCase
         ]);
 
         if ($response->isInvalid() || $response->isClientError() || $response->isServerError()) {
-             if ($response->isRedirect() && session('errors')) {
-                 $this->fail('Validation errors: ' . json_encode(session('errors')->getMessages()));
-             }
-             $this->fail('Request failed with status ' . $response->status() . ': ' . $response->getContent());
+            if ($response->isRedirect() && session('errors')) {
+                $this->fail('Validation errors: '.json_encode(session('errors')->getMessages()));
+            }
+            $this->fail('Request failed with status '.$response->status().': '.$response->getContent());
         }
 
         $response->assertRedirect(route('messages.show', $conversation));
