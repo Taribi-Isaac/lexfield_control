@@ -66,9 +66,9 @@
 <body>
     <div class="header">
         <div class="brand">
-            <img src="{{ public_path('LEXFIELD-ICON.png') }}" alt="Lexfield Attorneys">
+            <img style="width: 200px; height: auto; margin-bottom: 10px;" src="{{ public_path('LEXFIELD-LOGO.png') }}" alt="Lexfield Attorneys">
             <div>
-                <h1>Lexfield Attorneys</h1>
+                <!-- <h1>Lexfield Attorneys</h1> -->
                 <div class="subtitle">10 Ada George Road, Port Harcourt, Rivers State, Nigeria</div>
                 <div class="subtitle">+234-8032468300 | +234-9076781037 · info@lexfieldattorneys.com</div>
             </div>
@@ -91,7 +91,7 @@
     @endif
 
     <div class="section">
-        <h2>Notification</h2>
+        <!-- <h2>Notification</h2> -->
         <div class="content">{!! $letter->body !!}</div>
     </div>
 
