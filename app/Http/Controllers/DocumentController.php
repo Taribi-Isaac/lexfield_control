@@ -82,7 +82,7 @@ class DocumentController extends Controller
     {
         Gate::authorize('permission', 'documents.view');
 
-        $document->load(['uploader', 'links']);
+        $document->load(['uploader', 'links.documentable']);
 
         return Inertia::render('documents/show', [
             'document' => [
@@ -95,8 +95,14 @@ class DocumentController extends Controller
                 'uploader' => $document->uploader?->name,
                 'created_at' => $document->created_at?->toDateTimeString(),
                 'links' => $document->links->map(fn ($link): array => [
-                    'type' => $link->documentable_type,
+                    'type' => class_basename($link->documentable_type),
                     'id' => $link->documentable_id,
+                    'name' => match (true) {
+                        $link->documentable instanceof Client => $link->documentable->name,
+                        $link->documentable instanceof CaseFile => $link->documentable->title,
+                        $link->documentable instanceof User => $link->documentable->name,
+                        default => 'Unknown',
+                    },
                 ]),
             ],
         ]);
@@ -154,6 +160,13 @@ class DocumentController extends Controller
         Gate::authorize('permission', 'documents.view');
 
         return Storage::disk($document->disk)->download($document->file_path, $document->file_name);
+    }
+
+    public function view(Document $document): \Symfony\Component\HttpFoundation\Response
+    {
+        Gate::authorize('permission', 'documents.view');
+
+        return Storage::disk($document->disk)->response($document->file_path, $document->file_name);
     }
 
     public function destroy(Document $document): RedirectResponse
