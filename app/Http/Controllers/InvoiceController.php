@@ -153,7 +153,7 @@ class InvoiceController extends Controller
 
     public function download(Invoice $invoice): HttpResponse
     {
-        Gate::authorize('permission', 'invoices.view');
+        Gate::authorize('permission', 'invoices.download');
 
         $invoice->load(['client', 'caseFile', 'items', 'createdBy']);
 
@@ -166,7 +166,7 @@ class InvoiceController extends Controller
 
     public function receipt(Invoice $invoice): HttpResponse
     {
-        Gate::authorize('permission', 'invoices.view');
+        Gate::authorize('permission', 'invoices.download');
 
         if ($invoice->status !== 'Paid') {
             abort(404);

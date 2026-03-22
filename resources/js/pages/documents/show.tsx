@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function DocumentShow({ document }: { document: Document }) {
+    const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
+    const canDownload = auth.user.permissions.includes('documents.download');
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Document Details" />
@@ -57,15 +60,17 @@ export default function DocumentShow({ document }: { document: Document }) {
                                 View
                             </a>
                         </Button>
-                        <Button asChild>
-                            <a
-                                href={DocumentController.download({
-                                    document: document.id,
-                                }).url}
-                            >
-                                Download
-                            </a>
-                        </Button>
+                        {canDownload && (
+                            <Button asChild>
+                                <a
+                                    href={DocumentController.download({
+                                        document: document.id,
+                                    }).url}
+                                >
+                                    Download
+                                </a>
+                            </Button>
+                        )}
                         <DeleteAction
                             action={DocumentController.destroy({
                                 document: document.id,

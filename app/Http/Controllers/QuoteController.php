@@ -141,7 +141,7 @@ class QuoteController extends Controller
 
     public function download(Quote $quote): HttpResponse
     {
-        Gate::authorize('permission', 'quotes.view');
+        Gate::authorize('permission', 'quotes.download');
 
         $quote->load(['client', 'caseFile', 'items', 'createdBy']);
 

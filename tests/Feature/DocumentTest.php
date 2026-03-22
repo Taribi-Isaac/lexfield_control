@@ -32,6 +32,38 @@ class DocumentTest extends TestCase
             ->where('document.id', $document->id));
     }
 
+    public function test_staff_with_permission_can_download_document(): void
+    {
+        Storage::fake('local');
+        $user = $this->createUserWithPermissions(['documents.download']);
+
+        $document = Document::factory()->create([
+            'uploader_id' => $user->id,
+            'file_path' => 'documents/test.pdf',
+            'file_name' => 'test.pdf',
+            'disk' => 'local',
+        ]);
+        Storage::disk('local')->put('documents/test.pdf', 'content');
+
+        $response = $this->actingAs($user)->get(route('documents.download', $document));
+
+        $response->assertOk();
+        $response->assertHeader('Content-Disposition', 'attachment; filename=test.pdf');
+    }
+
+    public function test_staff_without_permission_cannot_download_document(): void
+    {
+        $user = $this->createUserWithPermissions(['documents.view']);
+
+        $document = Document::factory()->create([
+            'uploader_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('documents.download', $document));
+
+        $response->assertForbidden();
+    }
+
     public function test_can_upload_general_document(): void
     {
         Storage::fake('local');
