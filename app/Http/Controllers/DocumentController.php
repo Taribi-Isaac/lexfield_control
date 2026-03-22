@@ -157,7 +157,7 @@ class DocumentController extends Controller
 
     public function download(Document $document): StreamedResponse
     {
-        Gate::authorize('permission', 'documents.view');
+        Gate::authorize('permission', 'documents.download');
 
         return Storage::disk($document->disk)->download($document->file_path, $document->file_name);
     }

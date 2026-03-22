@@ -56,7 +56,7 @@ class ConversationAttachmentTest extends TestCase
     {
         Storage::fake('local');
 
-        $user = $this->createUserWithPermissions(['messages.view']);
+        $user = $this->createUserWithPermissions(['messages.download']);
 
         $conversation = Conversation::factory()->create();
         $message = Message::factory()->create(['conversation_id' => $conversation->id]);
@@ -74,6 +74,28 @@ class ConversationAttachmentTest extends TestCase
 
         $response->assertOk();
         $response->assertHeader('Content-Disposition', 'attachment; filename=test.pdf');
+    }
+
+    public function test_cannot_download_conversation_attachment_without_permission()
+    {
+        Storage::fake('local');
+
+        $user = $this->createUserWithPermissions(['messages.view']);
+
+        $conversation = Conversation::factory()->create();
+        $message = Message::factory()->create(['conversation_id' => $conversation->id]);
+
+        $attachment = ConversationAttachment::create([
+            'message_id' => $message->id,
+            'file_path' => 'attachments/test.pdf',
+            'file_name' => 'test.pdf',
+            'mime_type' => 'application/pdf',
+            'file_size' => 100,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('conversation-attachments.download', $attachment));
+
+        $response->assertForbidden();
     }
 
     private function createUserWithPermissions(array $permissionSlugs): User

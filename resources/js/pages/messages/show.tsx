@@ -1,4 +1,4 @@
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import ConversationAttachmentController from '@/actions/App/Http/Controllers/ConversationAttachmentController';
 import ConversationController from '@/actions/App/Http/Controllers/ConversationController';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
@@ -51,6 +51,10 @@ export default function MessagesShow({
     conversation: Conversation;
     documents: Document[];
 }) {
+    const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
+    const canDownloadMessages = auth.user.permissions.includes('messages.download');
+    const canDownloadDocuments = auth.user.permissions.includes('documents.download');
+
     const send = MessageController.store({ conversation: conversation.id });
 
     return (
@@ -123,14 +127,20 @@ export default function MessagesShow({
                                                     className="mr-2"
                                                 >
                                                     <a
-                                                        href={
+                                                        href={canDownloadDocuments ?
                                                             DocumentController.download(
                                                                 {
                                                                     document:
                                                                         attachment.id,
                                                                 },
-                                                            ).url
+                                                            ).url : '#'
                                                         }
+                                                        onClick={(e) => {
+                                                            if (!canDownloadDocuments) {
+                                                                e.preventDefault();
+                                                                alert('You do not have permission to download documents.');
+                                                            }
+                                                        }}
                                                         className="text-blue-700 hover:underline"
                                                     >
                                                         {attachment.title}
@@ -145,14 +155,20 @@ export default function MessagesShow({
                                                     className="mr-2"
                                                 >
                                                     <a
-                                                        href={
+                                                        href={canDownloadMessages ?
                                                             ConversationAttachmentController.download(
                                                                 {
                                                                     attachment:
                                                                         attachment.id,
                                                                 },
-                                                            ).url
+                                                            ).url : '#'
                                                         }
+                                                        onClick={(e) => {
+                                                            if (!canDownloadMessages) {
+                                                                e.preventDefault();
+                                                                alert('You do not have permission to download attachments.');
+                                                            }
+                                                        }}
                                                         className="text-blue-700 hover:underline"
                                                     >
                                                         {attachment.file_name}
