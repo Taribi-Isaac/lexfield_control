@@ -1,4 +1,4 @@
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,6 +33,9 @@ export default function DocumentsIndex({
     documents: Paginated<DocumentItem>;
     filters: { search?: string | null };
 }) {
+    const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
+    const canDownload = auth.user.permissions.includes('documents.download');
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Documents" />
@@ -110,17 +113,21 @@ export default function DocumentsIndex({
                                             >
                                                 View
                                             </a>
-                                            <span className="text-slate-300">
-                                                |
-                                            </span>
-                                            <a
-                                                className="text-sm text-primary underline-offset-4 hover:underline"
-                                                href={DocumentController.download({
-                                                    document: document.id,
-                                                }).url}
-                                            >
-                                                Download
-                                            </a>
+                                            {canDownload && (
+                                                <>
+                                                    <span className="text-slate-300">
+                                                        |
+                                                    </span>
+                                                    <a
+                                                        className="text-sm text-primary underline-offset-4 hover:underline"
+                                                        href={DocumentController.download({
+                                                            document: document.id,
+                                                        }).url}
+                                                    >
+                                                        Download
+                                                    </a>
+                                                </>
+                                            )}
                                             <span className="text-slate-300">
                                                 |
                                             </span>
