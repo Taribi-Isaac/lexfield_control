@@ -34,6 +34,7 @@ class PermissionSeeder extends Seeder
             'edit' => 'Edit',
             'delete' => 'Delete',
             'review' => 'Review',
+            'download' => 'Download',
         ];
 
         foreach ($modules as $moduleSlug => $moduleName) {

@@ -11,7 +11,7 @@ class ConversationAttachmentController extends Controller
 {
     public function download(ConversationAttachment $attachment): StreamedResponse
     {
-        Gate::authorize('permission', 'messages.view');
+        Gate::authorize('permission', 'messages.download');
 
         return Storage::disk('local')->download($attachment->file_path, $attachment->file_name);
     }

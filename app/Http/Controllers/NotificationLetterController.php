@@ -137,7 +137,7 @@ class NotificationLetterController extends Controller
 
     public function download(NotificationLetter $notificationLetter): HttpResponse
     {
-        Gate::authorize('permission', 'notification-letters.view');
+        Gate::authorize('permission', 'notification-letters.download');
 
         $notificationLetter->load(['client', 'caseFile', 'createdBy']);
 
