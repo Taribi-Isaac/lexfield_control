@@ -4,8 +4,10 @@ namespace App\Http\Middleware;
 
 use App\Models\ActivityLog;
 use Closure;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ActivityLogger
 {
@@ -46,22 +48,14 @@ class ActivityLogger
             'metadata' => [
                 'payload' => collect($request->except(['password', 'password_confirmation']))
                     ->map(function ($value) {
-                        if ($value instanceof \Illuminate\Http\UploadedFile) {
-                            return [
-                                'name' => $value->getClientOriginalName(),
-                                'size' => $value->getSize(),
-                                'mime' => $value->getMimeType(),
-                            ];
+                        if ($value instanceof UploadedFile) {
+                            return $this->normalizeUploadedFile($value);
                         }
 
                         if (is_array($value)) {
                             return collect($value)->map(function ($item) {
-                                if ($item instanceof \Illuminate\Http\UploadedFile) {
-                                    return [
-                                        'name' => $item->getClientOriginalName(),
-                                        'size' => $item->getSize(),
-                                        'mime' => $item->getMimeType(),
-                                    ];
+                                if ($item instanceof UploadedFile) {
+                                    return $this->normalizeUploadedFile($item);
                                 }
 
                                 return $item;
@@ -74,5 +68,32 @@ class ActivityLogger
         ]);
 
         return $response;
+    }
+
+    /**
+     * @return array{name:string,size:int|null,mime:string|null,valid:bool,error:int|null}
+     */
+    private function normalizeUploadedFile(UploadedFile $file): array
+    {
+        $normalized = [
+            'name' => $file->getClientOriginalName(),
+            'size' => $file->getSize(),
+            'mime' => null,
+            'valid' => $file->isValid(),
+            'error' => $file->getError(),
+        ];
+
+        if (! $normalized['valid']) {
+            return $normalized;
+        }
+
+        try {
+            $normalized['mime'] = $file->getMimeType();
+        } catch (Throwable) {
+            // Keep logging non-fatal if temp file was cleaned up.
+            $normalized['mime'] = null;
+        }
+
+        return $normalized;
     }
 }

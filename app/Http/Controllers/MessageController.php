@@ -36,6 +36,10 @@ class MessageController extends Controller
         $files = $request->file('files') ?? [];
 
         foreach ($files as $file) {
+            if (! $file->isValid()) {
+                continue;
+            }
+
             $path = $file->store('conversation_attachments', 'local');
 
             ConversationAttachment::query()->create([
