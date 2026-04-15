@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
+import { type ChangeEvent, useState } from 'react';
 
 type Document = {
     id: number;
@@ -54,8 +55,38 @@ export default function MessagesShow({
     const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
     const canDownloadMessages = auth.user.permissions.includes('messages.download');
     const canDownloadDocuments = auth.user.permissions.includes('documents.download');
+    const [fileValidationError, setFileValidationError] = useState<string | null>(null);
+    const [selectedFileNames, setSelectedFileNames] = useState<string[]>([]);
 
     const send = MessageController.store({ conversation: conversation.id });
+    const maxFileSizeBytes = 10 * 1024 * 1024;
+
+    const handleFilesChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files ?? []);
+
+        if (files.length === 0) {
+            setFileValidationError(null);
+            setSelectedFileNames([]);
+
+            return;
+        }
+
+        const oversizedFiles = files.filter((file) => file.size > maxFileSizeBytes);
+
+        if (oversizedFiles.length > 0) {
+            const names = oversizedFiles.map((file) => file.name).join(', ');
+            setFileValidationError(
+                `File upload limit is 10MB. Please remove oversized file(s): ${names}.`,
+            );
+            setSelectedFileNames([]);
+            event.target.value = '';
+
+            return;
+        }
+
+        setFileValidationError(null);
+        setSelectedFileNames(files.map((file) => file.name));
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -234,12 +265,25 @@ export default function MessagesShow({
                                         name="files[]"
                                         type="file"
                                         multiple
+                                        onChange={handleFilesChange}
                                     />
+                                    {fileValidationError && (
+                                        <p className="text-sm text-red-600">
+                                            {fileValidationError}
+                                        </p>
+                                    )}
                                     <InputError message={errors.files} />
+                                    {selectedFileNames.length > 0 && (
+                                        <p className="text-xs text-slate-500">
+                                            Selected: {selectedFileNames.join(', ')}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <Button disabled={processing}>Send</Button>
+                                    <Button disabled={processing || !!fileValidationError}>
+                                        Send
+                                    </Button>
                                 </div>
                             </>
                         )}
