@@ -3,6 +3,7 @@ import {
     Briefcase,
     CalendarDays,
     FileText,
+    FolderOpen,
     LayoutGrid,
     FileBarChart2,
     CreditCard,
@@ -14,6 +15,7 @@ import {
     Users,
 } from 'lucide-react';
 import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
+import CaseDocumentController from '@/actions/App/Http/Controllers/CaseDocumentController';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import CauseListController from '@/actions/App/Http/Controllers/CauseListController';
 import ClientController from '@/actions/App/Http/Controllers/ClientController';
@@ -57,6 +59,11 @@ const mainNavItems: NavItem[] = [
         title: 'Cases',
         href: CaseFileController.index(),
         icon: Briefcase,
+    },
+    {
+        title: 'Case Docs',
+        href: CaseDocumentController.index(),
+        icon: FolderOpen,
     },
     {
         title: 'Cause List',
