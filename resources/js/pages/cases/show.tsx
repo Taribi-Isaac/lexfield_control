@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import CaseDocumentController from '@/actions/App/Http/Controllers/CaseDocumentController';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
@@ -59,6 +60,15 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
                                 Edit
                             </Link>
                         </Button>
+                        <Button asChild variant="outline">
+                            <Link
+                                href={CaseDocumentController.showCaseDocs({
+                                    case: caseFile.id,
+                                })}
+                            >
+                                Case Docs
+                            </Link>
+                        </Button>
                         <DeleteAction
                             action={CaseFileController.destroy({
                                 case: caseFile.id,
@@ -67,6 +77,21 @@ export default function CaseShow({ caseFile }: { caseFile: CaseFile }) {
                             description={`Are you sure you want to delete ${caseFile.title}?`}
                         />
                     </div>
+                </div>
+
+                <div className="inline-flex w-fit items-center rounded-lg border p-1">
+                    <Button variant="secondary" size="sm">
+                        Case Details
+                    </Button>
+                    <Button asChild variant="ghost" size="sm">
+                        <Link
+                            href={CaseDocumentController.showCaseDocs({
+                                case: caseFile.id,
+                            })}
+                        >
+                            Case Docs
+                        </Link>
+                    </Button>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">

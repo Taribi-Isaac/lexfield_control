@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
+import caseDocs from '@/routes/case-docs';
 import cases from '@/routes/cases';
 import causeList from '@/routes/cause-list';
 import clients from '@/routes/clients';
@@ -319,6 +320,12 @@ export default function Dashboard({
                                 className="block text-blue-700 hover:underline"
                             >
                                 Upload document
+                            </Link>
+                            <Link
+                                href={caseDocs.create()}
+                                className="block text-blue-700 hover:underline"
+                            >
+                                Upload case doc
                             </Link>
                             <Link
                                 href={causeList.create()}

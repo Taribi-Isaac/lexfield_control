@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\CaseDocumentController;
 use App\Http\Controllers\CaseFileController;
 use App\Http\Controllers\CauseListController;
 use App\Http\Controllers\ClientController;
@@ -24,6 +25,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('staff', StaffController::class)->except(['show']);
     Route::resource('clients', ClientController::class);
     Route::resource('cases', CaseFileController::class);
+    Route::get('cases/{case}/docs', [CaseDocumentController::class, 'showCaseDocs'])->name('cases.docs');
+    Route::get('case-docs', [CaseDocumentController::class, 'index'])->name('case-docs.index');
+    Route::get('case-docs/create', [CaseDocumentController::class, 'create'])->name('case-docs.create');
+    Route::post('case-docs', [CaseDocumentController::class, 'store'])->name('case-docs.store');
+    Route::delete('case-docs/{document}', [CaseDocumentController::class, 'destroy'])->name('case-docs.destroy');
     Route::resource('cause-list', CauseListController::class);
     Route::resource('reports', ReportController::class);
     Route::resource('quotes', QuoteController::class);

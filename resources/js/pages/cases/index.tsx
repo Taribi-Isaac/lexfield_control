@@ -1,10 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import CaseDocumentController from '@/actions/App/Http/Controllers/CaseDocumentController';
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
+import DeleteAction from '@/components/delete-action';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import DeleteAction from '@/components/delete-action';
 
 type CaseItem = {
     id: number;
@@ -117,6 +118,19 @@ export default function CasesIndex({
                                                 })}
                                             >
                                                 Edit
+                                            </Link>
+                                            <span className="text-slate-300">
+                                                |
+                                            </span>
+                                            <Link
+                                                className="text-sm text-primary underline-offset-4 hover:underline"
+                                                href={CaseDocumentController.showCaseDocs(
+                                                    {
+                                                        case: caseFile.id,
+                                                    },
+                                                )}
+                                            >
+                                                Case Docs
                                             </Link>
                                             <span className="text-slate-300">
                                                 |
