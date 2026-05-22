@@ -40,6 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('messages.send');
     Route::get('conversation-attachments/{attachment}/download', [\App\Http\Controllers\ConversationAttachmentController::class, 'download'])
         ->name('conversation-attachments.download');
+    Route::get('conversation-attachments/{attachment}/view', [\App\Http\Controllers\ConversationAttachmentController::class, 'view'])
+        ->name('conversation-attachments.view');
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     Route::post('notification-letters/{notification_letter}/duplicate', [NotificationLetterController::class, 'duplicate'])
         ->name('notification-letters.duplicate');
@@ -48,14 +50,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'notification-letters/{notification_letter}/download',
         [NotificationLetterController::class, 'download']
     )->name('notification-letters.download');
+    Route::get(
+        'notification-letters/{notification_letter}/view',
+        [NotificationLetterController::class, 'view']
+    )->name('notification-letters.view');
     Route::get('quotes/{quote}/download', [QuoteController::class, 'download'])
         ->name('quotes.download');
+    Route::get('quotes/{quote}/view', [QuoteController::class, 'view'])
+        ->name('quotes.view');
     Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])
         ->name('invoices.download');
+    Route::get('invoices/{invoice}/view', [InvoiceController::class, 'view'])
+        ->name('invoices.view');
     Route::get('invoices/{invoice}/receipt', [InvoiceController::class, 'receipt'])
         ->name('invoices.receipt');
+    Route::get('invoices/{invoice}/receipt/view', [InvoiceController::class, 'viewReceipt'])
+        ->name('invoices.receipt.view');
     Route::get('payments/{payment}/receipt', [PaymentController::class, 'receipt'])
         ->name('payments.receipt');
+    Route::get('payments/{payment}/receipt/view', [PaymentController::class, 'viewReceipt'])
+        ->name('payments.receipt.view');
     Route::patch('reports/{report}/review', [ReportController::class, 'review'])->name('reports.review');
     Route::resource('roles', RoleController::class)->only(['index', 'edit', 'update']);
     Route::get('documents/{document}/download', [DocumentController::class, 'download'])

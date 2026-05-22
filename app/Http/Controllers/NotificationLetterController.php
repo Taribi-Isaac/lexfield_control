@@ -148,6 +148,19 @@ class NotificationLetterController extends Controller
         return $pdf->download('notification-letter-'.$notificationLetter->id.'.pdf');
     }
 
+    public function view(NotificationLetter $notificationLetter): HttpResponse
+    {
+        Gate::authorize('permission', 'notification-letters.download');
+
+        $notificationLetter->load(['client', 'caseFile', 'createdBy']);
+
+        $pdf = Pdf::loadView('letters/notification', [
+            'letter' => $notificationLetter,
+        ]);
+
+        return $pdf->stream('notification-letter-'.$notificationLetter->id.'.pdf');
+    }
+
     public function duplicate(NotificationLetter $notificationLetter): RedirectResponse
     {
         Gate::authorize('permission', 'notification-letters.create');

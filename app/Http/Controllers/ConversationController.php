@@ -124,6 +124,7 @@ class ConversationController extends Controller
                     'conversation_attachments' => $entry->conversationAttachments->map(fn ($attachment): array => [
                         'id' => $attachment->id,
                         'file_name' => $attachment->file_name,
+                        'mime_type' => $attachment->mime_type,
                     ]),
                 ]),
             ],

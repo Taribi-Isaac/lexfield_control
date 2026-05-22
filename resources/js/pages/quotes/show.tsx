@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import QuoteController from '@/actions/App/Http/Controllers/QuoteController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -57,6 +58,19 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
                         <Button asChild variant="outline">
                             <Link href={QuoteController.index()}>Back</Link>
                         </Button>
+                        <DocumentPreviewTrigger
+                            title={`Quote ${quote.quote_number}`}
+                            fileName={`quote-${quote.quote_number}.pdf`}
+                            mimeType="application/pdf"
+                            viewUrl={QuoteController.view({ quote: quote.id }).url}
+                            downloadUrl={QuoteController.download({
+                                quote: quote.id,
+                            }).url}
+                            variant="button"
+                            buttonVariant="outline"
+                        >
+                            View quote
+                        </DocumentPreviewTrigger>
                         <Button asChild variant="outline">
                             <a
                                 href={
@@ -64,8 +78,6 @@ export default function QuoteShow({ quote }: { quote: Quote }) {
                                         quote: quote.id,
                                     }).url
                                 }
-                                target="_blank"
-                                rel="noopener noreferrer"
                             >
                                 Download
                             </a>

@@ -15,4 +15,15 @@ class ConversationAttachmentController extends Controller
 
         return Storage::disk('local')->download($attachment->file_path, $attachment->file_name);
     }
+
+    public function view(ConversationAttachment $attachment): \Symfony\Component\HttpFoundation\Response
+    {
+        Gate::authorize('permission', 'messages.download');
+
+        return Storage::disk('local')->response(
+            $attachment->file_path,
+            $attachment->file_name,
+            ['Content-Type' => $attachment->mime_type ?? 'application/octet-stream'],
+        );
+    }
 }

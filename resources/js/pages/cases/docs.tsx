@@ -3,6 +3,7 @@ import CaseDocumentController from '@/actions/App/Http/Controllers/CaseDocumentC
 import CaseFileController from '@/actions/App/Http/Controllers/CaseFileController';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -44,6 +45,7 @@ export default function CaseDocsShow({
     const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>()
         .props;
     const canDownload = auth.user.permissions.includes('documents.download');
+    const canView = auth.user.permissions.includes('documents.view');
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -121,16 +123,20 @@ export default function CaseDocsShow({
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
-                                            <a
-                                                className="text-sm text-primary underline-offset-4 hover:underline"
-                                                href={DocumentController.view({
+                                            <DocumentPreviewTrigger
+                                                title={document.title}
+                                                fileName={document.file_name}
+                                                viewUrl={DocumentController.view({
                                                     document: document.id,
                                                 }).url}
-                                                target="_blank"
-                                                rel="noreferrer"
+                                                downloadUrl={DocumentController.download({
+                                                    document: document.id,
+                                                }).url}
+                                                canView={canView}
+                                                canDownload={canDownload}
                                             >
                                                 View
-                                            </a>
+                                            </DocumentPreviewTrigger>
                                             {canDownload && (
                                                 <>
                                                     <span className="text-slate-300">

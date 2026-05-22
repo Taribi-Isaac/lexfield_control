@@ -164,6 +164,19 @@ class InvoiceController extends Controller
         return $pdf->download('invoice-'.$invoice->invoice_number.'.pdf');
     }
 
+    public function view(Invoice $invoice): HttpResponse
+    {
+        Gate::authorize('permission', 'invoices.download');
+
+        $invoice->load(['client', 'caseFile', 'items', 'createdBy']);
+
+        $pdf = Pdf::loadView('finance.invoice', [
+            'invoice' => $invoice,
+        ]);
+
+        return $pdf->stream('invoice-'.$invoice->invoice_number.'.pdf');
+    }
+
     public function receipt(Invoice $invoice): HttpResponse
     {
         Gate::authorize('permission', 'invoices.download');
@@ -179,6 +192,23 @@ class InvoiceController extends Controller
         ]);
 
         return $pdf->download('receipt-'.$invoice->invoice_number.'.pdf');
+    }
+
+    public function viewReceipt(Invoice $invoice): HttpResponse
+    {
+        Gate::authorize('permission', 'invoices.download');
+
+        if ($invoice->status !== 'Paid') {
+            abort(404);
+        }
+
+        $invoice->load(['client', 'caseFile', 'items', 'createdBy']);
+
+        $pdf = Pdf::loadView('finance.receipt', [
+            'invoice' => $invoice,
+        ]);
+
+        return $pdf->stream('receipt-'.$invoice->invoice_number.'.pdf');
     }
 
     public function edit(Invoice $invoice): Response
