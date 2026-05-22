@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 
 type DocumentItem = {
     id: number;
@@ -35,6 +36,7 @@ export default function DocumentsIndex({
 }) {
     const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
     const canDownload = auth.user.permissions.includes('documents.download');
+    const canView = auth.user.permissions.includes('documents.view');
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -103,16 +105,20 @@ export default function DocumentsIndex({
                                             <span className="text-slate-300">
                                                 |
                                             </span>
-                                            <a
-                                                className="text-sm text-primary underline-offset-4 hover:underline"
-                                                href={DocumentController.view({
+                                            <DocumentPreviewTrigger
+                                                title={document.title}
+                                                fileName={document.file_name}
+                                                viewUrl={DocumentController.view({
                                                     document: document.id,
                                                 }).url}
-                                                target="_blank"
-                                                rel="noreferrer"
+                                                downloadUrl={DocumentController.download({
+                                                    document: document.id,
+                                                }).url}
+                                                canView={canView}
+                                                canDownload={canDownload}
                                             >
                                                 View
-                                            </a>
+                                            </DocumentPreviewTrigger>
                                             {canDownload && (
                                                 <>
                                                     <span className="text-slate-300">

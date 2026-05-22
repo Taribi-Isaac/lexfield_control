@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import InvoiceController from '@/actions/App/Http/Controllers/InvoiceController';
 import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -79,6 +80,21 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                                 Record payment
                             </Link>
                         </Button>
+                        <DocumentPreviewTrigger
+                            title={`Invoice ${invoice.invoice_number}`}
+                            fileName={`invoice-${invoice.invoice_number}.pdf`}
+                            mimeType="application/pdf"
+                            viewUrl={InvoiceController.view({
+                                invoice: invoice.id,
+                            }).url}
+                            downloadUrl={InvoiceController.download({
+                                invoice: invoice.id,
+                            }).url}
+                            variant="button"
+                            buttonVariant="outline"
+                        >
+                            View invoice
+                        </DocumentPreviewTrigger>
                         <Button asChild variant="outline">
                             <a
                                 href={
@@ -86,26 +102,39 @@ export default function InvoiceShow({ invoice }: { invoice: Invoice }) {
                                         invoice: invoice.id,
                                     }).url
                                 }
-                                target="_blank"
-                                rel="noopener noreferrer"
                             >
                                 Download
                             </a>
                         </Button>
                         {invoice.status === 'Paid' && (
-                            <Button asChild variant="outline">
-                                <a
-                                    href={
-                                        InvoiceController.receipt({
-                                            invoice: invoice.id,
-                                        }).url
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                            <>
+                                <DocumentPreviewTrigger
+                                    title={`Receipt ${invoice.invoice_number}`}
+                                    fileName={`receipt-${invoice.invoice_number}.pdf`}
+                                    mimeType="application/pdf"
+                                    viewUrl={InvoiceController.viewReceipt({
+                                        invoice: invoice.id,
+                                    }).url}
+                                    downloadUrl={InvoiceController.receipt({
+                                        invoice: invoice.id,
+                                    }).url}
+                                    variant="button"
+                                    buttonVariant="outline"
                                 >
-                                    Receipt
-                                </a>
-                            </Button>
+                                    View receipt
+                                </DocumentPreviewTrigger>
+                                <Button asChild variant="outline">
+                                    <a
+                                        href={
+                                            InvoiceController.receipt({
+                                                invoice: invoice.id,
+                                            }).url
+                                        }
+                                    >
+                                        Download receipt
+                                    </a>
+                                </Button>
+                            </>
                         )}
                         <Button asChild>
                             <Link

@@ -4,6 +4,7 @@ import ConversationController from '@/actions/App/Http/Controllers/ConversationC
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import MessageController from '@/actions/App/Http/Controllers/MessageController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +24,11 @@ type Message = {
     sender?: string | null;
     sent_at?: string | null;
     attachments: { id: number; title?: string | null }[];
-    conversation_attachments: { id: number; file_name: string }[];
+    conversation_attachments: {
+        id: number;
+        file_name: string;
+        mime_type?: string | null;
+    }[];
 };
 
 type Conversation = {
@@ -55,6 +60,7 @@ export default function MessagesShow({
     const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
     const canDownloadMessages = auth.user.permissions.includes('messages.download');
     const canDownloadDocuments = auth.user.permissions.includes('documents.download');
+    const canViewDocuments = auth.user.permissions.includes('documents.view');
     const [fileValidationError, setFileValidationError] = useState<string | null>(null);
     const [selectedFileNames, setSelectedFileNames] = useState<string[]>([]);
 
@@ -157,25 +163,28 @@ export default function MessagesShow({
                                                     key={attachment.id}
                                                     className="mr-2"
                                                 >
-                                                    <a
-                                                        href={canDownloadDocuments ?
-                                                            DocumentController.download(
-                                                                {
-                                                                    document:
-                                                                        attachment.id,
-                                                                },
-                                                            ).url : '#'
+                                                    <DocumentPreviewTrigger
+                                                        title={
+                                                            attachment.title ??
+                                                            'Document'
                                                         }
-                                                        onClick={(e) => {
-                                                            if (!canDownloadDocuments) {
-                                                                e.preventDefault();
-                                                                alert('You do not have permission to download documents.');
-                                                            }
+                                                        viewUrl={DocumentController.view({
+                                                            document: attachment.id,
+                                                        }).url}
+                                                        downloadUrl={DocumentController.download({
+                                                            document: attachment.id,
+                                                        }).url}
+                                                        canView={canViewDocuments}
+                                                        canDownload={canDownloadDocuments}
+                                                        onDenied={() => {
+                                                            alert(
+                                                                'You do not have permission to view this document.',
+                                                            );
                                                         }}
-                                                        className="text-blue-700 hover:underline"
+                                                        className="text-blue-700"
                                                     >
                                                         {attachment.title}
-                                                    </a>
+                                                    </DocumentPreviewTrigger>
                                                 </span>
                                             ),
                                         )}
@@ -185,25 +194,27 @@ export default function MessagesShow({
                                                     key={attachment.id}
                                                     className="mr-2"
                                                 >
-                                                    <a
-                                                        href={canDownloadMessages ?
-                                                            ConversationAttachmentController.download(
-                                                                {
-                                                                    attachment:
-                                                                        attachment.id,
-                                                                },
-                                                            ).url : '#'
-                                                        }
-                                                        onClick={(e) => {
-                                                            if (!canDownloadMessages) {
-                                                                e.preventDefault();
-                                                                alert('You do not have permission to download attachments.');
-                                                            }
+                                                    <DocumentPreviewTrigger
+                                                        title={attachment.file_name}
+                                                        fileName={attachment.file_name}
+                                                        mimeType={attachment.mime_type}
+                                                        viewUrl={ConversationAttachmentController.view({
+                                                            attachment: attachment.id,
+                                                        }).url}
+                                                        downloadUrl={ConversationAttachmentController.download({
+                                                            attachment: attachment.id,
+                                                        }).url}
+                                                        canView={canDownloadMessages}
+                                                        canDownload={canDownloadMessages}
+                                                        onDenied={() => {
+                                                            alert(
+                                                                'You do not have permission to view this attachment.',
+                                                            );
                                                         }}
-                                                        className="text-blue-700 hover:underline"
+                                                        className="text-blue-700"
                                                     >
                                                         {attachment.file_name}
-                                                    </a>
+                                                    </DocumentPreviewTrigger>
                                                 </span>
                                             ),
                                         )}

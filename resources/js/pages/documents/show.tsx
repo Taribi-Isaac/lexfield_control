@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -31,6 +32,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function DocumentShow({ document }: { document: Document }) {
     const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
     const canDownload = auth.user.permissions.includes('documents.download');
+    const canView = auth.user.permissions.includes('documents.view');
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -49,17 +51,23 @@ export default function DocumentShow({ document }: { document: Document }) {
                         <Button asChild variant="outline">
                             <Link href={DocumentController.index()}>Back</Link>
                         </Button>
-                        <Button asChild variant="secondary">
-                            <a
-                                href={DocumentController.view({
-                                    document: document.id,
-                                }).url}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                View
-                            </a>
-                        </Button>
+                        <DocumentPreviewTrigger
+                            title={document.title}
+                            fileName={document.file_name}
+                            mimeType={document.mime_type}
+                            viewUrl={DocumentController.view({
+                                document: document.id,
+                            }).url}
+                            downloadUrl={DocumentController.download({
+                                document: document.id,
+                            }).url}
+                            canView={canView}
+                            canDownload={canDownload}
+                            variant="button"
+                            buttonVariant="secondary"
+                        >
+                            View
+                        </DocumentPreviewTrigger>
                         {canDownload && (
                             <Button asChild>
                                 <a

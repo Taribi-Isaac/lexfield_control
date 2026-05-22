@@ -1,6 +1,7 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import NotificationLetterController from '@/actions/App/Http/Controllers/NotificationLetterController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -57,6 +58,21 @@ export default function NotificationLetterShow({ letter }: { letter: Letter }) {
                                 Edit
                             </Link>
                         </Button>
+                        <DocumentPreviewTrigger
+                            title={letter.title}
+                            fileName={`notification-letter-${letter.id}.pdf`}
+                            mimeType="application/pdf"
+                            viewUrl={NotificationLetterController.view({
+                                notification_letter: letter.id,
+                            }).url}
+                            downloadUrl={NotificationLetterController.download({
+                                notification_letter: letter.id,
+                            }).url}
+                            variant="button"
+                            buttonVariant="outline"
+                        >
+                            View PDF
+                        </DocumentPreviewTrigger>
                         <Button asChild>
                             <a
                                 href={
@@ -64,8 +80,6 @@ export default function NotificationLetterShow({ letter }: { letter: Letter }) {
                                         notification_letter: letter.id,
                                     }).url
                                 }
-                                target="_blank"
-                                rel="noopener noreferrer"
                             >
                                 Download
                             </a>

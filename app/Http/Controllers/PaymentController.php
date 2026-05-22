@@ -198,6 +198,19 @@ class PaymentController extends Controller
         return $pdf->download('receipt-'.$payment->receipt_number.'.pdf');
     }
 
+    public function viewReceipt(Payment $payment): HttpResponse
+    {
+        Gate::authorize('permission', 'payments.view');
+
+        $payment->load(['invoice.client', 'receivedBy', 'invoice.items', 'invoice.caseFile']);
+
+        $pdf = Pdf::loadView('finance.payment-receipt', [
+            'payment' => $payment,
+        ]);
+
+        return $pdf->stream('receipt-'.$payment->receipt_number.'.pdf');
+    }
+
     private function generateReceiptNumber(): string
     {
         do {

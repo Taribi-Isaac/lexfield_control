@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import PaymentController from '@/actions/App/Http/Controllers/PaymentController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -52,6 +53,21 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
                         <Button asChild variant="outline">
                             <Link href={PaymentController.index()}>Back</Link>
                         </Button>
+                        <DocumentPreviewTrigger
+                            title={`Receipt ${payment.receipt_number}`}
+                            fileName={`receipt-${payment.receipt_number}.pdf`}
+                            mimeType="application/pdf"
+                            viewUrl={PaymentController.viewReceipt({
+                                payment: payment.id,
+                            }).url}
+                            downloadUrl={PaymentController.receipt({
+                                payment: payment.id,
+                            }).url}
+                            variant="button"
+                            buttonVariant="outline"
+                        >
+                            View receipt
+                        </DocumentPreviewTrigger>
                         <Button asChild variant="outline">
                             <a
                                 href={
@@ -59,10 +75,8 @@ export default function PaymentShow({ payment }: { payment: Payment }) {
                                         payment: payment.id,
                                     }).url
                                 }
-                                target="_blank"
-                                rel="noopener noreferrer"
                             >
-                                Receipt
+                                Download receipt
                             </a>
                         </Button>
                         <Button asChild>

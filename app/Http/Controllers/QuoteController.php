@@ -152,6 +152,19 @@ class QuoteController extends Controller
         return $pdf->download('quote-'.$quote->quote_number.'.pdf');
     }
 
+    public function view(Quote $quote): HttpResponse
+    {
+        Gate::authorize('permission', 'quotes.download');
+
+        $quote->load(['client', 'caseFile', 'items', 'createdBy']);
+
+        $pdf = Pdf::loadView('finance.quote', [
+            'quote' => $quote,
+        ]);
+
+        return $pdf->stream('quote-'.$quote->quote_number.'.pdf');
+    }
+
     public function edit(Quote $quote): Response
     {
         Gate::authorize('permission', 'quotes.edit');

@@ -166,7 +166,9 @@ class ReportController extends Controller
                 'attachments' => $report->attachments->map(fn ($attachment): array => [
                     'id' => $attachment->document?->id,
                     'title' => $attachment->document?->title,
-                ])->filter(),
+                    'file_name' => $attachment->document?->file_name,
+                    'mime_type' => $attachment->document?->mime_type,
+                ])->filter(fn (array $attachment): bool => $attachment['id'] !== null)->values(),
             ],
         ]);
     }

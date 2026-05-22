@@ -1,6 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import DocumentController from '@/actions/App/Http/Controllers/DocumentController';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import DeleteAction from '@/components/delete-action';
+import DocumentPreviewTrigger from '@/components/document-preview-trigger';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -16,7 +18,12 @@ type Report = {
     reviewed_by?: string | null;
     submitted_at?: string | null;
     reviewed_at?: string | null;
-    attachments: { id: number; title: string }[];
+    attachments: {
+        id: number;
+        title: string;
+        file_name?: string | null;
+        mime_type?: string | null;
+    }[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -31,6 +38,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ReportShow({ report }: { report: Report }) {
+    const { auth } = usePage<{ auth: { user: { permissions: string[] } } }>().props;
+    const canView = auth.user.permissions.includes('documents.view');
+    const canDownload = auth.user.permissions.includes('documents.download');
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Details" />
@@ -102,7 +113,21 @@ export default function ReportShow({ report }: { report: Report }) {
                             <ul className="space-y-2 text-sm text-slate-700">
                                 {report.attachments.map((attachment) => (
                                     <li key={attachment.id}>
-                                        {attachment.title}
+                                        <DocumentPreviewTrigger
+                                            title={attachment.title}
+                                            fileName={attachment.file_name}
+                                            mimeType={attachment.mime_type}
+                                            viewUrl={DocumentController.view({
+                                                document: attachment.id,
+                                            }).url}
+                                            downloadUrl={DocumentController.download({
+                                                document: attachment.id,
+                                            }).url}
+                                            canView={canView}
+                                            canDownload={canDownload}
+                                        >
+                                            {attachment.title}
+                                        </DocumentPreviewTrigger>
                                     </li>
                                 ))}
                             </ul>
